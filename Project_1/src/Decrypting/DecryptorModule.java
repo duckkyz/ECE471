@@ -54,6 +54,8 @@ public class DecryptorModule {
 			System.out.println(stringList.get(i).letter + ": " + stringList.get(i).freq + " - " + (double)stringList.get(i).freq/inputString.length() * 100 + "%");
 		}
 		
+		System.out.println("See above for letter frequencies");
+		System.out.println("");
 		System.out.println("What type of decryption would you like to try?");
 		System.out.println("Enter - 1: Shift");
 		System.out.println("	  - 2: Somethingelse");
@@ -97,12 +99,13 @@ public class DecryptorModule {
 			freqList.add(Math.abs(DecryptorModule.charToInt(stringList.get(i).letter) - DecryptorModule.charToInt('A')));
 			freqList.add(Math.abs(DecryptorModule.charToInt(stringList.get(i).letter) - DecryptorModule.charToInt('O')));
 			freqList.add(Math.abs(DecryptorModule.charToInt(stringList.get(i).letter) - DecryptorModule.charToInt('I')));
-			
+			/*	
 			System.out.println(stringList.get(i).letter + " - E = " + Math.abs(DecryptorModule.charToInt(stringList.get(i).letter) - DecryptorModule.charToInt('E')));
 			System.out.println(stringList.get(i).letter + " - T = " + Math.abs(DecryptorModule.charToInt(stringList.get(i).letter) - DecryptorModule.charToInt('T')));
 			System.out.println(stringList.get(i).letter + " - A = " + Math.abs(DecryptorModule.charToInt(stringList.get(i).letter) - DecryptorModule.charToInt('A')));
 			System.out.println(stringList.get(i).letter + " - O = " + Math.abs(DecryptorModule.charToInt(stringList.get(i).letter) - DecryptorModule.charToInt('O')));
 			System.out.println(stringList.get(i).letter + " - I = " + Math.abs(DecryptorModule.charToInt(stringList.get(i).letter) - DecryptorModule.charToInt('I')));
+			 */
 		}
 		int highest_Val = 0;
 		for(int i = 0; i < 26; i++){
@@ -120,15 +123,15 @@ public class DecryptorModule {
 			}
 		}
 		
-		//Scanner user_input = new Scanner(System.in);
-		//System.out.println("Please input shift amount: ");
-		//int shiftAmount = Integer.parseInt(user_input.next());
-		System.out.println("Shift amount will be: " + highest_Val);
+		System.out.println("\nShift amount will be: " + highest_Val);
 		int shiftAmount = highest_Val;
-		DecryptorModule.shiftDecrypt(inputString, shiftAmount);
+		String toPrint = DecryptorModule.shiftMessage(inputString, shiftAmount);
+		
+		System.out.print(toPrint);
 	}
 	
-	public static void shiftDecrypt(String s, int shiftAmount){
+	public static String shiftMessage(String s, int shiftAmount){
+		String returnString = "";
 		for(int i=0; i<s.length(); i++){
 			int shiftedVal = DecryptorModule.charToInt(s.charAt(i));
 			if((shiftedVal - shiftAmount) < DecryptorModule.charToInt('A')){
@@ -139,11 +142,12 @@ public class DecryptorModule {
 			}
 			shiftedVal = ((shiftedVal - DecryptorModule.charToInt('A'))%25) + DecryptorModule.charToInt('A');
 			char toPrint = DecryptorModule.intToChar(shiftedVal);
-			System.out.print(toPrint);
+			returnString = returnString + toPrint;
 			if(((i%75) == 0) & (i != 0)){
-				System.out.println("");
+				returnString = returnString + "\n";
 			}
 		}
+		return returnString;
 	}
 	
 	public static int getFileSuffix(){
