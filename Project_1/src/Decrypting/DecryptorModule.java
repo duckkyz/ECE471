@@ -12,22 +12,24 @@ import java.io.FileReader;
 
 public class DecryptorModule {
 	public static void main(String[] args) throws IOException {
-		int a = 3;
-		int b = 5;
-		//new File("Drawable_Images/Archer.png")
-		//String filePath = "/Users/Ben/Desktop/ECE 471/Projects/Project 1/ciphertexts/cipher1.txt";
-		String filePath = "ciphertexts/cipher1.txt";
-		String s = "";
+		System.out.println("Welcome to the decryptor module. Which file would you like to decrypt?");
+		System.out.println("Enter 1, 2, 3 or 4");
+		System.out.println("");
+		
+		int fileSuffix = DecryptorModule.getFileSuffix();
+		String filePath = "ciphertexts/cipher" + fileSuffix + ".txt";
+		String inputString = "";
 		String line = "";
 		try{
 			FileReader fileReader = new FileReader(filePath);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			while((line = bufferedReader.readLine()) != null){
-				s = s + line;
+				inputString = inputString + line;
 			}
 		}
 		catch(FileNotFoundException ex){
-			System.out.println("Counld not find file");
+			System.out.println("Could not find file");
+			return;
 		}
 
 		ArrayList<cipherLetter> stringList = new ArrayList<cipherLetter>();
@@ -35,8 +37,8 @@ public class DecryptorModule {
 			cipherLetter tempLetter = new cipherLetter();
 			tempLetter.letter = DecryptorModule.intToChar(i);
 			int counter = 0;
-			for(int j=0; j<s.length(); j++){
-				if(DecryptorModule.charToInt(s.charAt(j)) == i){
+			for(int j=0; j<inputString.length(); j++){
+				if(DecryptorModule.charToInt(inputString.charAt(j)) == i){
 					++counter;
 				}
 			}
@@ -49,9 +51,40 @@ public class DecryptorModule {
 			}
 		});
 		for(int i = 0; i<stringList.size(); i++){
-			System.out.println(stringList.get(i).letter + ": " + stringList.get(i).freq + " - " + (double)stringList.get(i).freq/s.length() * 100 + "%");
+			System.out.println(stringList.get(i).letter + ": " + stringList.get(i).freq + " - " + (double)stringList.get(i).freq/inputString.length() * 100 + "%");
 		}
 		
+		System.out.println("What type of decryption would you like to try?");
+		System.out.println("Enter - 1: Shift");
+		System.out.println("	  - 2: Somethingelse");
+		System.out.println("	  - 3: Somethingelse");
+		System.out.println("	  - 4: Somethingelse");
+		System.out.println("	  - 5: Somethingelse");
+		
+		Scanner user_input = new Scanner(System.in);
+		System.out.println("Please enter selection: ");
+		int decryptionMethod = Integer.parseInt(user_input.next());
+		
+		if(decryptionMethod == 1){
+			DecryptorModule.decryptShiftCipher(stringList, inputString);
+		}
+		
+		return;
+	}
+	
+	public static char intToChar(int letter){
+		char temp = (char) letter;
+		
+		return temp;
+	}
+	
+	public static int charToInt(char letter){
+		int temp = (int) letter;
+		
+		return temp;
+	}
+	
+	public static void decryptShiftCipher(ArrayList<cipherLetter> stringList, String inputString){
 		ArrayList<cipherLetter> letterFreqList = new ArrayList<cipherLetter>();
 		letterFreqList.add(new cipherLetter(127, 'E'));
 		ArrayList<Integer> freqList = new ArrayList<Integer>();
@@ -92,21 +125,7 @@ public class DecryptorModule {
 		//int shiftAmount = Integer.parseInt(user_input.next());
 		System.out.println("Shift amount will be: " + highest_Val);
 		int shiftAmount = highest_Val;
-		DecryptorModule.shiftDecrypt(s, shiftAmount);
-		
-		return;
-	}
-	
-	public static char intToChar(int letter){
-		char temp = (char) letter;
-		
-		return temp;
-	}
-	
-	public static int charToInt(char letter){
-		int temp = (int) letter;
-		
-		return temp;
+		DecryptorModule.shiftDecrypt(inputString, shiftAmount);
 	}
 	
 	public static void shiftDecrypt(String s, int shiftAmount){
@@ -125,5 +144,44 @@ public class DecryptorModule {
 				System.out.println("");
 			}
 		}
+	}
+	
+	public static int getFileSuffix(){
+		int fileSuffix = 0;
+		Scanner user_input = new Scanner(System.in);
+		System.out.println("Please enter selection: ");
+		fileSuffix = Integer.parseInt(user_input.next());
+		
+		boolean isValid = false;
+		if(fileSuffix == 1){
+			isValid = true;
+		}
+		else if(fileSuffix == 2){
+			isValid = true;
+		}
+		else if(fileSuffix == 3){
+			isValid = true;
+		}
+		else if(fileSuffix == 4){
+			isValid = true;
+		}
+		while(!isValid){
+			System.out.println("Please enter 1, 2, 3 or 4");
+			fileSuffix = Integer.parseInt(user_input.next());
+			if(fileSuffix == 1){
+				isValid = true;
+			}
+			else if(fileSuffix == 2){
+				isValid = true;
+			}
+			else if(fileSuffix == 3){
+				isValid = true;
+			}
+			else if(fileSuffix == 4){
+				isValid = true;
+			}
+		}
+
+		return fileSuffix;
 	}
 }
