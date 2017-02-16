@@ -33,7 +33,7 @@ public class DecryptorModule {
 		}
 
 		ArrayList<cipherLetter> stringList = new ArrayList<cipherLetter>();
-		for(int i=DecryptorModule.charToInt('A'); i<DecryptorModule.charToInt('Z'); i++){
+		for(int i=DecryptorModule.charToInt('A'); i<=DecryptorModule.charToInt('Z'); i++){
 			cipherLetter tempLetter = new cipherLetter();
 			tempLetter.letter = DecryptorModule.intToChar(i);
 			int counter = 0;
@@ -52,6 +52,7 @@ public class DecryptorModule {
 		});
 		for(int i = 0; i<stringList.size(); i++){
 			System.out.println(stringList.get(i).letter + ": " + stringList.get(i).freq + " - " + (double)stringList.get(i).freq/inputString.length() * 100 + "%");
+			System.out.println(i);
 		}
 		
 		System.out.println("See above for letter frequencies");
