@@ -68,7 +68,7 @@ public class DecryptorModule {
 		int decryptionMethod = Integer.parseInt(user_input.next());
 		
 		if(decryptionMethod == 1){
-			DecryptorModule.decryptShiftCipher(stringList, inputString);
+			DecryptShift.decryptShiftCipher(stringList, inputString);
 		}
 		
 		return;
