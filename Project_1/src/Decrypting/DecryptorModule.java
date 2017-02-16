@@ -55,11 +55,20 @@ public class DecryptorModule {
 			System.out.println(i);
 		}
 		
+		double IC = 0;
+		int count = 0;
+		for(int i = 0; i < stringList.size(); i++) {
+			IC = IC + (stringList.get(i).freq * (stringList.get(i).freq - 1));
+			count = count + stringList.get(i).freq;
+		}
+		IC = IC / (.0385*(inputString.length()*(inputString.length()-1)));
+		System.out.println("Index of Coincidence: " + IC);
+		
 		System.out.println("See above for letter frequencies");
 		System.out.println("");
 		System.out.println("What type of decryption would you like to try?");
 		System.out.println("Enter - 1: Shift");
-		System.out.println("	  - 2: Somethingelse");
+		System.out.println("Enter - 2: Substitution");
 		System.out.println("	  - 3: Somethingelse");
 		System.out.println("	  - 4: Somethingelse");
 		System.out.println("	  - 5: Somethingelse");
@@ -70,6 +79,9 @@ public class DecryptorModule {
 		
 		if(decryptionMethod == 1){
 			DecryptShift.decryptShiftCipher(stringList, inputString);
+		}
+		else if(decryptionMethod == 2){
+			decryptSubstitution.decryptSubstitution(stringList, inputString);
 		}
 		
 		return;
