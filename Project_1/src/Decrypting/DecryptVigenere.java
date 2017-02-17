@@ -57,26 +57,33 @@ public class DecryptVigenere {
 	
 	
 	public static int kasiskiTest(String inputString){
-		int keyLength = 0;
+		int keyLength = 0; //should output 9
 		
-		ArrayList<cipherLetter> stringList = new ArrayList<cipherLetter>();
-		for(int i=DecryptorModule.charToInt('A'); i<=DecryptorModule.charToInt('Z'); i++){
-			cipherLetter tempLetter = new cipherLetter();
-			tempLetter.letter = DecryptorModule.intToChar(i);
-			int counter = 0;
-			for(int j=0; j<inputString.length(); j++){
-				if(DecryptorModule.charToInt(inputString.charAt(j)) == i){
-					++counter;
+		for(keyLength = 3; keyLength < 10; keyLength++){
+			ArrayList<cipherString> stringList = new ArrayList<cipherString>();
+			for(int i=0; i<=Math.ceil(inputString.length()/keyLength); i = i + keyLength + 1){
+				boolean found = false;
+				cipherString tempString = new cipherString();
+				tempString.string = inputString.substring(i, i + keyLength);
+				int counter = 1;
+				
+				for(cipherString cs : stringList){
+					if(cs.string.equals(tempString.string)){
+						++cs.freq;
+						found = true;
+					}
+				}
+				if(found == false){
+					tempString.freq = counter;
+					stringList.add(tempString);
 				}
 			}
-			tempLetter.freq = counter;
-			stringList.add(tempLetter);
+			Collections.sort(stringList, new Comparator<cipherString>(){
+				public int compare(cipherString l1, cipherString l2){
+					return l2.freq - l1.freq;
+				}
+			});
 		}
-		Collections.sort(stringList, new Comparator<cipherLetter>(){
-			public int compare(cipherLetter l1, cipherLetter l2){
-				return l2.freq - l1.freq;
-			}
-		});
 	
 		
 		return keyLength;
