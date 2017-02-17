@@ -1,0 +1,85 @@
+package Decrypting;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+public class DecryptVigenere {
+	public static void decryptVigenereCipher(ArrayList<cipherLetter> stringList, String inputString){
+		
+		
+		
+		
+		
+		
+		ArrayList<cipherLetter> letterFreqList = new ArrayList<cipherLetter>();
+		letterFreqList.add(new cipherLetter(127, 'E'));
+		ArrayList<Integer> freqList = new ArrayList<Integer>();
+		for(int i=0; i<6; i++){
+			System.out.println("");
+			System.out.println("New letter: " + stringList.get(i).letter);
+			
+			freqList.add(Math.abs(DecryptorModule.charToInt(stringList.get(i).letter) - DecryptorModule.charToInt('E')));
+			freqList.add(Math.abs(DecryptorModule.charToInt(stringList.get(i).letter) - DecryptorModule.charToInt('T')));
+			freqList.add(Math.abs(DecryptorModule.charToInt(stringList.get(i).letter) - DecryptorModule.charToInt('A')));
+			freqList.add(Math.abs(DecryptorModule.charToInt(stringList.get(i).letter) - DecryptorModule.charToInt('O')));
+			freqList.add(Math.abs(DecryptorModule.charToInt(stringList.get(i).letter) - DecryptorModule.charToInt('I')));
+			/*	
+			System.out.println(stringList.get(i).letter + " - E = " + Math.abs(DecryptorModule.charToInt(stringList.get(i).letter) - DecryptorModule.charToInt('E')));
+			System.out.println(stringList.get(i).letter + " - T = " + Math.abs(DecryptorModule.charToInt(stringList.get(i).letter) - DecryptorModule.charToInt('T')));
+			System.out.println(stringList.get(i).letter + " - A = " + Math.abs(DecryptorModule.charToInt(stringList.get(i).letter) - DecryptorModule.charToInt('A')));
+			System.out.println(stringList.get(i).letter + " - O = " + Math.abs(DecryptorModule.charToInt(stringList.get(i).letter) - DecryptorModule.charToInt('O')));
+			System.out.println(stringList.get(i).letter + " - I = " + Math.abs(DecryptorModule.charToInt(stringList.get(i).letter) - DecryptorModule.charToInt('I')));
+			 */
+		}
+		int highest_Val = 0;
+		for(int i = 0; i < 26; i++){
+			int temp = 0;
+			for(Integer myNum : freqList){
+				if(myNum.equals(i)){
+					++temp;
+				}
+			}
+			if(temp > highest_Val){
+				highest_Val = i;
+			}
+			if(temp != 0){
+				System.out.println("Occurances of shift amount " + i + " : " + temp);
+			}
+		}
+		
+		System.out.println("\nShift amount will be: " + highest_Val);
+		int shiftAmount = highest_Val;
+		String toPrint = DecryptorModule.shiftMessage(inputString, shiftAmount);
+		
+		System.out.print(toPrint);
+	}
+	
+	
+	public static int kasiskiTest(String inputString){
+		int keyLength = 0;
+		
+		ArrayList<cipherLetter> stringList = new ArrayList<cipherLetter>();
+		for(int i=DecryptorModule.charToInt('A'); i<=DecryptorModule.charToInt('Z'); i++){
+			cipherLetter tempLetter = new cipherLetter();
+			tempLetter.letter = DecryptorModule.intToChar(i);
+			int counter = 0;
+			for(int j=0; j<inputString.length(); j++){
+				if(DecryptorModule.charToInt(inputString.charAt(j)) == i){
+					++counter;
+				}
+			}
+			tempLetter.freq = counter;
+			stringList.add(tempLetter);
+		}
+		Collections.sort(stringList, new Comparator<cipherLetter>(){
+			public int compare(cipherLetter l1, cipherLetter l2){
+				return l2.freq - l1.freq;
+			}
+		});
+	
+		
+		return keyLength;
+	}
+	
+}
