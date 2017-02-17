@@ -67,11 +67,10 @@ public class DecryptorModule {
 		System.out.println("See above for letter frequencies");
 		System.out.println("");
 		System.out.println("What type of decryption would you like to try?");
-		System.out.println("Enter - 1: Shift");
-		System.out.println("Enter - 2: Substitution");
-		System.out.println("	  - 3: Somethingelse");
-		System.out.println("	  - 4: Somethingelse");
-		System.out.println("	  - 5: Somethingelse");
+		System.out.println("	- 1: Shift");
+		System.out.println(" 	- 2: Substitution");
+		System.out.println("	- 3: THE ONLY ONE LEFT");
+		System.out.println("	- 4: Vigenere");
 		
 		Scanner user_input = new Scanner(System.in);
 		System.out.println("Please enter selection: ");
@@ -82,6 +81,12 @@ public class DecryptorModule {
 		}
 		else if(decryptionMethod == 2){
 			DecryptSubstitution.decryptSubstitution(stringList, inputString);
+		}
+		else if(decryptionMethod == 3){
+			
+		}
+		else if(decryptionMethod == 4){
+			DecryptVigenere.decryptVigenereCipher(stringList, inputString);
 		}
 		
 		return;
