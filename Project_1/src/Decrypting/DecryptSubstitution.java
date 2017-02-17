@@ -9,7 +9,7 @@ public class DecryptSubstitution {
 		char[] letterFreq = {'E', 'T', 'A', 'O', 'I', 'N', 'S', 'H', 'R', 'D', 'L', 'U', 'C', 'M', 'W', 'F', 'Y', 'G', 'P', 'B', 
 				'V', 'K', 'X', 'J', 'Q', 'Z'};
 		char[] currKey = new char[26];										//holds the current key
-		char[] plaintext = new char[100000];								//holds the current plaintext
+		char[] plaintext = new char[inputString.length()];								//holds the current plaintext
 		
 		for(int i = 0; i < stringList.size(); i++){							//initialize current key array
 			currKey[i] = stringList.get(i).letter;
@@ -45,11 +45,11 @@ public class DecryptSubstitution {
 				
 				
 				for(int x = 0; x < currKey.length; x++){						//changes the key
-					if(currKey[x] == char1){
-						currKey[x] = char2;
+					if((currKey[x] == char1) | (Character.toLowerCase(currKey[x]) == char1)){
+						currKey[x] = Character.toUpperCase(char2);
 					}
-					else if(currKey[x] == char2)
-						currKey[x] = char1;
+					else if((currKey[x] == char2) | (Character.toLowerCase(currKey[x]) == char2))
+						currKey[x] = Character.toUpperCase(char1);
 				}
 				
 				for(int x = 0; x < plaintext.length; x++){						//changes the plaintext
