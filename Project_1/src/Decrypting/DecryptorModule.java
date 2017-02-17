@@ -81,7 +81,7 @@ public class DecryptorModule {
 			DecryptShift.decryptShiftCipher(stringList, inputString);
 		}
 		else if(decryptionMethod == 2){
-			decryptSubstitution.decryptSubstitution(stringList, inputString);
+			DecryptSubstitution.decryptSubstitution(stringList, inputString);
 		}
 		
 		return;

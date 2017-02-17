@@ -3,7 +3,7 @@ package Decrypting;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class decryptSubstitution {
+public class DecryptSubstitution {
 
 	public static void decryptSubstitution(ArrayList<cipherLetter> stringList, String inputString){
 		char[] letterFreq = {'E', 'T', 'A', 'O', 'I', 'N', 'S', 'H', 'R', 'D', 'L', 'U', 'C', 'M', 'W', 'F', 'Y', 'G', 'P', 'B', 
