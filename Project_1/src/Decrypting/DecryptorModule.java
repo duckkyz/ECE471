@@ -108,13 +108,16 @@ public class DecryptorModule {
 		String returnString = "";
 		for(int i=0; i<s.length(); i++){
 			int shiftedVal = DecryptorModule.charToInt(s.charAt(i));
+			int tempPoopA = DecryptorModule.charToInt('A');
+			int tempPoopZ = DecryptorModule.charToInt('Z');
 			if((shiftedVal - shiftAmount) < DecryptorModule.charToInt('A')){
-				shiftedVal = DecryptorModule.charToInt('Z') - (DecryptorModule.charToInt('A') - shiftedVal - shiftAmount);
+				int shiftAmt = (DecryptorModule.charToInt('Z') - DecryptorModule.charToInt('A')) - shiftAmount  + 1;
+				shiftedVal = shiftedVal + shiftAmt;
 			}
 			else{
 				shiftedVal = shiftedVal - shiftAmount;
 			}
-			shiftedVal = ((shiftedVal - DecryptorModule.charToInt('A'))%25) + DecryptorModule.charToInt('A');
+			shiftedVal = ((shiftedVal - DecryptorModule.charToInt('A'))%26) + DecryptorModule.charToInt('A');
 			char toPrint = DecryptorModule.intToChar(shiftedVal);
 			returnString = returnString + toPrint;
 			if(((i%75) == 0) & (i != 0)){

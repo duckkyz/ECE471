@@ -13,6 +13,7 @@ public class DecryptVigenere {
 	public static int kasiskiTest(String inputString){
 		int keyLength = 0; //should output 9 should be worcester
 		int minDist = inputString.length();
+		ArrayList<cipherDistance> distanceList = new ArrayList<cipherDistance>();
 		for(keyLength = 3; keyLength < 11; keyLength++){
 			System.out.println("\n\n\n% % % % NEW ITERATION % % % %\n");
 			minDist = inputString.length();
@@ -56,40 +57,44 @@ public class DecryptVigenere {
 				for(int loc = 1; loc < cs.locations.size(); loc++){		
 					int startingLoc = cs.locations.get(loc - 1);
 					if((cs.locations.get(loc) - startingLoc) != 0){
-						int tempDist = cs.locations.get(loc) - startingLoc;
-						
-						if(tempDist < minDist){
-							minDist = tempDist;
-							System.out.println("	produced new min dist = " + minDist);
+						cipherDistance tempCD = new cipherDistance();
+						tempCD.distance = cs.locations.get(loc) - startingLoc;
+						boolean isFound = false;
+						for(cipherDistance cD : distanceList){
+							if(cD.distance == tempCD.distance){
+								cD.freq += 1;
+								isFound = true;
+								break;
+							}
+						}
+						if(isFound != true){
+							tempCD.freq = 1;
+							distanceList.add(tempCD);
 						}
 					}
 				}
 				stringCount = stringCount + cs.freq;
+				//if(cs.freq > 1)
+				//	cs.getDistances();
 			}
 			//System.out.println(inputString.length() + " / "+ keyLength + " = " + (float)inputString.length()/keyLength);
 			System.out.println("minDist for keyLength: " + keyLength + " is: " + minDist);
+			
 		}
-	
+		Collections.sort(distanceList, new Comparator<cipherDistance>(){
+			public int compare(cipherDistance l1, cipherDistance l2){
+				return l2.freq - l1.freq;
+			}
+		});
 		test(inputString);
 		return keyLength;
 	}
 
-	public static void test(String inputString){
+	public static void test(String inputString){		
+		
 		String mostCommon = "YOCNQWBWY";
 		String key = "WORCESTER";
-		String plaintext = "CALLMEISHMAELSOMEYEARSAGONEVERMINDHOWLONGPRECISELYHAVINGLITTLEORNOMONEYINMYPURSEANDNOTHINGPARTICULARTOINTERESTMEONSHOREITHOUGHTIWOULDSAILABOUTALITTLEANDSEETHEWATERYPARTOFTHEWORLDITISAWAYIHAVEOFDRIVINGOFFTHESPLEENANDREGULATINGTHECIRCULATIONWHENEVERIFINDMYSELFGROWINGGRIMABOUTTHEMOUTHWHENEVERITISADAMPDRIZZLY";
 		
-		for(int i=0; i<plaintext.length(); i++){
-			String temp = inputString.substring(i, i+1);
-			int shiftAmount = DecryptorModule.charToInt(key.charAt(i%key.length())) - DecryptorModule.charToInt('A');
-			//System.out.println("Sending in : String " + temp + " Shift " + shiftAmount);
-			String tempOut = DecryptorModule.shiftMessage(temp, shiftAmount);
-			if(DecryptorModule.charToInt(tempOut.charAt(0)) != DecryptorModule.charToInt(plaintext.charAt(i))){
-				System.out.println(inputString.charAt(i) + " shifted by " + key.charAt(i%key.length()) + " = " + tempOut + ", should equal " + plaintext.charAt(i) + "  keyIndex = " + i%key.length());
-			}
-		}
-		
-		/*
 		String output = "";
 		for(int i=0; i<inputString.length(); i++){
 			String temp = inputString.substring(i, i+1);
@@ -103,7 +108,6 @@ public class DecryptVigenere {
 			}
 		}
 		System.out.println(output);
-		*/
 		
 	}
 	

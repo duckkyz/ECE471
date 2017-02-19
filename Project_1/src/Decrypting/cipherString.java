@@ -15,4 +15,11 @@ public class cipherString {
 		this.string = string;
 		locations.add(loc);
 	}
+	
+	public void getDistances(){
+		System.out.println("String: " + string);
+		for(int i=1;i<locations.size();i++){
+			System.out.println("		" + (locations.get(i) - locations.get(i - 1)));
+		}
+	}
 }
