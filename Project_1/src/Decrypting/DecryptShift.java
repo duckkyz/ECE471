@@ -5,8 +5,6 @@ import java.util.ArrayList;
 public class DecryptShift {
 
 	public static void decryptShiftCipher(ArrayList<cipherLetter> stringList, String inputString){
-		ArrayList<cipherLetter> letterFreqList = new ArrayList<cipherLetter>();
-		letterFreqList.add(new cipherLetter(127, 'E'));
 		ArrayList<Integer> freqList = new ArrayList<Integer>();
 		for(int i=0; i<6; i++){
 			System.out.println("");

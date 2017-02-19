@@ -1,13 +1,13 @@
 package Decrypting;
 
 public class cipherLetter {
-	public int freq = 0;
+	public double freq = 0;
 	public char letter = 'a';
 	
 	public cipherLetter(){
 		
 	}
-	public cipherLetter(int freq, char letter){
+	public cipherLetter(char letter, double freq){
 		this.freq = freq;
 		this.letter = letter;
 	}
