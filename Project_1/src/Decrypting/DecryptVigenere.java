@@ -88,6 +88,7 @@ public class DecryptVigenere {
 		boolean done = false;
 		while(done == false){
 			System.out.println("\n\nLets try to find the key now!\n");
+			printLikelyKeys(fullChiList);
 			System.out.println("What would you like to do?");
 			System.out.println("	- 1: See Chi values");
 			System.out.println(" 	- 2: See/Modify Key");
@@ -103,13 +104,15 @@ public class DecryptVigenere {
 					seeChiValues(fullChiList);
 					break;
 				case(2):
-					changeKey(keyString);
+					keyString = changeKey(keyString);
 					break;
 				case(3):
 					System.out.println("** Testing key: " + keyString);
 					testOutput(inputString, keyString);
 					break;
 				case(4):
+					System.out.println("Printing solution for cipher4, key: " + solutionKey);
+					testOutput(inputString, solutionKey);
 					break;
 				case(5):
 					done = true;
@@ -184,7 +187,25 @@ public class DecryptVigenere {
 		return fullChiList;
 	}
 	
-	public static void changeKey(String keyString){
+	public static void printLikelyKeys(ArrayList<ArrayList<cipherLetter>> fullChiList){
+		System.out.println("# # PRINTING LIKELY KEYS: # #");
+		for(int j = 0; j < 5; j++){
+			System.out.print("	");
+			for(int i = 0; i < fullChiList.size(); i++){
+				System.out.print(fullChiList.get(i).get(j).letter);						
+			}
+		}
+		System.out.println("");
+		for(int j = 4; j >= 0; j--){
+			System.out.print("	");
+			for(int i = 0; i < fullChiList.size(); i++){
+				System.out.print(fullChiList.get(i).get(j).letter);						
+			}
+		}
+		System.out.println("");
+	}
+	
+	public static String changeKey(String keyString){
 		System.out.println("What would you like to do?");
 		System.out.println("	- 1: Change whole key");
 		System.out.println(" 	- 2: Change one letter");
@@ -199,16 +220,40 @@ public class DecryptVigenere {
 				System.out.println("Please enter new key of size " + keyString.length() + ": ");
 				key = user_input.nextLine();
 			}
-			key.toUpperCase();
-			keyString = key;
+			keyString = key.toUpperCase();
 		}
 		else if(choice == 2){
-			System.out.println("Please enter which letter you would like to replace (1-" + keyString.length() + ": ");
-			int letterIdx = Integer.parseInt(user_input.next());
+			int letterIdx = 0;
+			while(letterIdx < 1 || letterIdx > keyString.length()){
+				user_input = new Scanner(System.in);
+				System.out.println("Please enter which letter you would like to replace (1-" + keyString.length() + "): ");
+				letterIdx = Integer.parseInt(user_input.next());
+			}
+			letterIdx -= 1;
+			String keyLetter = "";
+			while(keyLetter.equals("") || keyLetter.length() != 1){
+				user_input = new Scanner(System.in);
+				System.out.println("Please enter new letter: ");
+				keyLetter = user_input.nextLine();
+			}
+			
+			String temp = "";
+			for(int i = 0; i<keyString.length(); i++ ){
+				if(i == letterIdx){
+					temp += keyLetter.toUpperCase();
+				}
+				else{
+					temp += keyString.substring(i, i+1);
+				}
+			}
+			keyString = temp;
+			
 		}
 		else{
 			System.out.println("Invalid choice, returning key menu");
 		}
+		System.out.println("New key: " + keyString);
+		return keyString;
 	}
 	
 	public static void testOutput(String inputString, String key){				
@@ -218,11 +263,11 @@ public class DecryptVigenere {
 			int shiftAmount = DecryptorModule.charToInt(key.charAt(i%key.length())) - DecryptorModule.charToInt('A');
 			//System.out.println("Sending in : String " + temp + " Shift " + shiftAmount);
 			output = output + DecryptorModule.shiftMessage(temp, shiftAmount);
-			if(i!=0){
-				if((i+1)%key.length() == 0){
-					output = output + "\n";
-				}
-			}
+			//if(i!=0){
+			//	if((i+1)%key.length() == 0){
+			//		output = output + "\n";
+			//	}
+			//}
 		}
 		System.out.println(output);
 		
