@@ -28,7 +28,7 @@ public class DecryptSubstitution {
 			}
 			
 			Scanner user_input = new Scanner(System.in);
-			System.out.println("\nPress 1 to see current key, 2 to switch characters, 3 to see found solution (given plaintext only), or 4 to exit");
+			System.out.println("\nPress 1 to see current key, 2 to switch characters, 3 to see found solution (given plaintext only), 4 to see full text and exit");
 			int option = Integer.parseInt(user_input.next());
 			
 			if(option == 1){
@@ -72,6 +72,15 @@ public class DecryptSubstitution {
 					}
 					
 				}	
+			}
+			else if(option == 4){
+				
+				for(int i = 0; (i < plaintext.length); i++){
+					System.out.print(plaintext[i]);
+					if((i%100 == 0) & (i != 0))
+						System.out.println("");
+				}
+				break;
 			}
 			else
 				break;

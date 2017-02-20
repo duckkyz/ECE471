@@ -41,16 +41,28 @@ public class DecryptorModule {
 		}
 		
 		double IC = getIC(stringList, inputString);
-		
 		System.out.println("Index of Coincidence: " + IC);
+		if(IC >= 1.68 & IC <= 1.78){
+			System.out.println("Recommend trying shifting");
+		}
+		else if(IC > 1.73){
+			System.out.println("Recommend trying substitution");
+		}
+		else if(IC > 0.95 & IC < 1.05){
+			System.out.println("Cipher is probably one time pad");
+		}
+		else if(IC > 0.95 & IC < 1.5){
+			System.out.println("Recommend trying Vigenere");
+		}
+	
+		
 		
 		System.out.println("See above for letter frequencies");
 		System.out.println("");
 		System.out.println("What type of decryption would you like to try?");
 		System.out.println("	- 1: Shift");
 		System.out.println(" 	- 2: Substitution");
-		System.out.println("	- 3: THE ONLY ONE LEFT");
-		System.out.println("	- 4: Vigenere");
+		System.out.println("	- 3: Vigenere");
 		
 		Scanner user_input = new Scanner(System.in);
 		System.out.println("Please enter selection: ");
@@ -63,9 +75,6 @@ public class DecryptorModule {
 			DecryptSubstitution.decryptSubstitution(stringList, inputString);
 		}
 		else if(decryptionMethod == 3){
-			
-		}
-		else if(decryptionMethod == 4){
 			DecryptVigenere.decryptVigenereCipher(stringList, inputString);
 		}
 		
