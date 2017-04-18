@@ -15,14 +15,26 @@ public class permutation {
 		int[] permutedText = new int[64];
 		
 		for(int i = 0; i < 8; i++){
-			permutedText[i*8 + 0] = inputText[57 + i*2];
-			permutedText[i*8 + 1] = inputText[49 + i*2];
-			permutedText[i*8 + 2] = inputText[41 + i*2];
-			permutedText[i*8 + 3] = inputText[33 + i*2];
-			permutedText[i*8 + 4] = inputText[25 + i*2];
-			permutedText[i*8 + 5] = inputText[17 + i*2];
-			permutedText[i*8 + 6] = inputText[ 9 + i*2];
-			permutedText[i*8 + 7] = inputText[ 1 + i*2];
+			if(i < 4){
+				permutedText[i*8 + 0] = inputText[57 + i*2];
+				permutedText[i*8 + 1] = inputText[49 + i*2];
+				permutedText[i*8 + 2] = inputText[41 + i*2];
+				permutedText[i*8 + 3] = inputText[33 + i*2];
+				permutedText[i*8 + 4] = inputText[25 + i*2];
+				permutedText[i*8 + 5] = inputText[17 + i*2];
+				permutedText[i*8 + 6] = inputText[ 9 + i*2];
+				permutedText[i*8 + 7] = inputText[ 1 + i*2];
+			}
+			else{
+				permutedText[i*8 + 0] = inputText[56 + (i-4)*2];
+				permutedText[i*8 + 1] = inputText[48 + (i-4)*2];
+				permutedText[i*8 + 2] = inputText[40 + (i-4)*2];
+				permutedText[i*8 + 3] = inputText[32 + (i-4)*2];
+				permutedText[i*8 + 4] = inputText[24 + (i-4)*2];
+				permutedText[i*8 + 5] = inputText[16 + (i-4)*2];
+				permutedText[i*8 + 6] = inputText[ 8 + (i-4)*2];
+				permutedText[i*8 + 7] = inputText[ 0 + (i-4)*2];
+			}
 		}
 		return permutedText;
 	}

@@ -1,9 +1,17 @@
 
 public class keyMixing {
 
-
+	public static int[] originalKey = new int[64];
+	private static int[] modifiedKey = new int[56];
 	
-	public int[] PC1Left(int[] key){
+	
+	
+	public static void PC1(){
+		PC1Left(originalKey);
+		PC1Right(originalKey);
+	}
+	
+	public static void PC1Left(int[] key){
 		/* 	Left
 		57	49	41	33	25	17	9
 		1	58	50	42	34	26	18
@@ -18,10 +26,12 @@ public class keyMixing {
 		leftKey[16] = key[58]; 	leftKey[17] = key[50];	leftKey[18] = key[42]; 	leftKey[19] = key[34]; 	
 		leftKey[20] = key[26];	leftKey[21] = key[18]; 	leftKey[22] = key[10]; 	leftKey[23] = key[2];
 		leftKey[24] = key[59]; 	leftKey[25] = key[51]; 	leftKey[26] = key[43];	leftKey[27] = key[35];
-		return leftKey;
+		for(int i = 0; i < 28; i++){
+			modifiedKey[i] = leftKey[i];
+		}
 	}
 	
-	public int[] PC1Right(int[] key){
+	public static void PC1Right(int[] key){
 		/*
 		Right
 		63	55	47	39	
@@ -40,20 +50,12 @@ public class keyMixing {
 		rightKey[16] 	= key[60]; 	rightKey[17] 	= key[52];	rightKey[18] 	= key[44]; 	rightKey[19] 	= key[36]; 	
 		rightKey[20] 	= key[28];	rightKey[21] 	= key[20]; 	rightKey[22] 	= key[12]; 	rightKey[23] 	= key[4];
 		rightKey[24] 	= key[27]; 	rightKey[25] 	= key[19]; 	rightKey[26] 	= key[11];	rightKey[27] 	= key[3];
-		return rightKey;
+		for(int i = 0; i < 28; i++){
+			modifiedKey[i + 28] = rightKey[i];
+		}
 	}
 
-	public int[] PC2(int[] rightSubKey, int[] leftSubKey){
-
-		int[] tempKey = new int[56];
-		for(int i = 0; i < 56; i++){
-			if(i < 26){
-				tempKey[i] = leftSubKey[i];
-			}
-			else{
-				tempKey[i] = leftSubKey[i - 26];
-			}
-		}
+	public static int[] PC2(){
 		int[] subKey = new int[48];
 		/*	14	17	11	
 		 * 	24	1	5
@@ -72,26 +74,26 @@ public class keyMixing {
 			46	42	50	
 			36	29	32
 			*/
-		subKey[0] 	= tempKey[13]; 	subKey[1] 	= tempKey[16]; 	subKey[2]	= tempKey[10];
-		subKey[3] 	= tempKey[23]; 	subKey[4] 	= tempKey[0]; 	subKey[5] 	= tempKey[6];
-		subKey[6] 	= tempKey[2]; 	subKey[7] 	= tempKey[27]; 	subKey[8] 	= tempKey[14];
-		subKey[9] 	= tempKey[5]; 	subKey[10] 	= tempKey[20]; 	subKey[11] 	= tempKey[9];
-		subKey[12] 	= tempKey[22]; 	subKey[13] 	= tempKey[18]; 	subKey[14] 	= tempKey[11];
-		subKey[15] 	= tempKey[3]; 	subKey[16] 	= tempKey[25]; 	subKey[17] 	= tempKey[7];
-		subKey[18] 	= tempKey[15]; 	subKey[19] 	= tempKey[6]; 	subKey[20] 	= tempKey[26];
-		subKey[21] 	= tempKey[19]; 	subKey[22] 	= tempKey[12]; 	subKey[23] 	= tempKey[1];
-		subKey[24] 	= tempKey[40]; 	subKey[25] 	= tempKey[51]; 	subKey[26] 	= tempKey[30];
-		subKey[27] 	= tempKey[36]; 	subKey[28] 	= tempKey[46]; 	subKey[29] 	= tempKey[54];
-		subKey[30] 	= tempKey[29]; 	subKey[31] 	= tempKey[39]; 	subKey[32] 	= tempKey[50];
-		subKey[33] 	= tempKey[44]; 	subKey[34] 	= tempKey[32]; 	subKey[35] 	= tempKey[47];
-		subKey[36] 	= tempKey[43]; 	subKey[37] 	= tempKey[48]; 	subKey[38] 	= tempKey[38];
-		subKey[39] 	= tempKey[55]; 	subKey[40] 	= tempKey[33]; 	subKey[41] 	= tempKey[52];
-		subKey[42] 	= tempKey[45]; 	subKey[43] 	= tempKey[41]; 	subKey[44] 	= tempKey[49];
-		subKey[45] 	= tempKey[35]; 	subKey[46] 	= tempKey[28]; 	subKey[47] 	= tempKey[31];
+		subKey[0] 	= modifiedKey[13]; 	subKey[1] 	= modifiedKey[16]; 	subKey[2]	= modifiedKey[10];
+		subKey[3] 	= modifiedKey[23]; 	subKey[4] 	= modifiedKey[0]; 	subKey[5] 	= modifiedKey[6];
+		subKey[6] 	= modifiedKey[2]; 	subKey[7] 	= modifiedKey[27]; 	subKey[8] 	= modifiedKey[14];
+		subKey[9] 	= modifiedKey[5]; 	subKey[10] 	= modifiedKey[20]; 	subKey[11] 	= modifiedKey[9];
+		subKey[12] 	= modifiedKey[22]; 	subKey[13] 	= modifiedKey[18]; 	subKey[14] 	= modifiedKey[11];
+		subKey[15] 	= modifiedKey[3]; 	subKey[16] 	= modifiedKey[25]; 	subKey[17] 	= modifiedKey[7];
+		subKey[18] 	= modifiedKey[15]; 	subKey[19] 	= modifiedKey[6]; 	subKey[20] 	= modifiedKey[26];
+		subKey[21] 	= modifiedKey[19]; 	subKey[22] 	= modifiedKey[12]; 	subKey[23] 	= modifiedKey[1];
+		subKey[24] 	= modifiedKey[40]; 	subKey[25] 	= modifiedKey[51]; 	subKey[26] 	= modifiedKey[30];
+		subKey[27] 	= modifiedKey[36]; 	subKey[28] 	= modifiedKey[46]; 	subKey[29] 	= modifiedKey[54];
+		subKey[30] 	= modifiedKey[29]; 	subKey[31] 	= modifiedKey[39]; 	subKey[32] 	= modifiedKey[50];
+		subKey[33] 	= modifiedKey[44]; 	subKey[34] 	= modifiedKey[32]; 	subKey[35] 	= modifiedKey[47];
+		subKey[36] 	= modifiedKey[43]; 	subKey[37] 	= modifiedKey[48]; 	subKey[38] 	= modifiedKey[38];
+		subKey[39] 	= modifiedKey[55]; 	subKey[40] 	= modifiedKey[33]; 	subKey[41] 	= modifiedKey[52];
+		subKey[42] 	= modifiedKey[45]; 	subKey[43] 	= modifiedKey[41]; 	subKey[44] 	= modifiedKey[49];
+		subKey[45] 	= modifiedKey[35]; 	subKey[46] 	= modifiedKey[28]; 	subKey[47] 	= modifiedKey[31];
 		return subKey;
 	}
 	
-	public int[] rotateHalf(int[] subKey, int round){
+	public static void rotateKey(int round){
 		/*Round number	Number of left rotations
 					1	1
 					2	1
@@ -110,9 +112,12 @@ public class keyMixing {
 					15	2
 					16	1
 		*/
-		int[] rotated = new int[26];
-		for(int i = 0; i < rotated.length; i++){
-			rotated[i] = subKey[i];
+		
+		int[] rotatedLeft = new int[26];
+		int[] rotatedRight = new int[26];
+		for(int i = 0; i < rotatedLeft.length; i++){
+			rotatedLeft[i] = modifiedKey[i];
+			rotatedRight[i] = modifiedKey[i + 28];
 		}
 		int iter = 2; 
 		if (round == 1 | round == 2 | round == 9 | round == 16){
@@ -120,21 +125,19 @@ public class keyMixing {
 			iter = 1;
 		}
 		
-		int[] temp = new int[26];
 		for(int k = 0; k < iter; k++){
-			for(int i = 0; i < 26; i++){
-				if(i == 25){
-					temp[i] = rotated[0];
+			for(int i = 0; i < 28; i++){
+				if(i == 27){
+					modifiedKey[i] = rotatedLeft[0];
+					modifiedKey[i + 28] = rotatedRight[0];
 				}
 				else{
-					temp[i] = rotated[i + 1];
+					modifiedKey[i] = rotatedLeft[i + 1];
+					modifiedKey[i + 28] = rotatedRight[i + 1];
 				}
 			}
-			for(int i = 0; i < rotated.length; i++){
-				rotated[i] = temp[i];
-			}
+
 		}
-		return rotated;	
 	}
 	
 }

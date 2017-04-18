@@ -38,6 +38,21 @@ public class fBlock {
 		this.subKey = subKey;
 	}
 	
+	public int[] process(){
+		expansion();
+		keyMixing();
+		s1Block();
+		s2Block();
+		s3Block();
+		s4Block();
+		s5Block();
+		s6Block();
+		s7Block();
+		s8Block();
+		postSBlockPerm();
+		return fOutput;
+	}
+	
 	public void expansion(){
 		for(int i = 0; i < 8; i++){
 			if(i == 0){
@@ -71,7 +86,7 @@ public class fBlock {
 		}
 	}
 	
-	public void s1Bock(){
+	public void s1Block(){
 		/*
 		 * S1	x0000x	x0001x	x0010x	x0011x	x0100x	x0101x	x0110x	x0111x	x1000x	x1001x	x1010x	x1011x	x1100x	x1101x	x1110x	x1111x
 		 * 0yyyy0	14	4	13	1	2	15	11	8	3	10	6	12	5	9	0	7
@@ -322,7 +337,7 @@ public class fBlock {
 		}
 	}
 	
-	public void s2Bock(){
+	public void s2Block(){
 		/*
 		 S2	x0000x	x0001x	x0010x	x0011x	x0100x	x0101x	x0110x	x0111x	x1000x	x1001x	x1010x	x1011x	x1100x	x1101x	x1110x	x1111x
 			0yyyy0	15	1	8	14	6	11	3	4	9	7	2	13	12	0	5	10
@@ -573,7 +588,7 @@ public class fBlock {
 		}
 	}
 
-	public void s3Bock(){
+	public void s3Block(){
 		/*
 		S3	x0000x	x0001x	x0010x	x0011x	x0100x	x0101x	x0110x	x0111x	x1000x	x1001x	x1010x	x1011x	x1100x	x1101x	x1110x	x1111x
 			0yyyy0	10	0	9	14	6	3	15	5	1	13	12	7	11	4	2	8
@@ -824,8 +839,7 @@ public class fBlock {
 		}
 	}
 	
-	// Need to set below: 
-	public void s4Bock(){
+	public void s4Block(){
 		/*
 		S4	x0000x	x0001x	x0010x	x0011x	x0100x	x0101x	x0110x	x0111x	x1000x	x1001x	x1010x	x1011x	x1100x	x1101x	x1110x	x1111x
 			0yyyy0	7	13	14	3	0	6	9	10	1	2	8	5	11	12	4	15
@@ -1076,7 +1090,7 @@ public class fBlock {
 		}
 	}
 	
-	public void s5Bock(){
+	public void s5Block(){
 		/*
 		S5	x0000x	x0001x	x0010x	x0011x	x0100x	x0101x	x0110x	x0111x	x1000x	x1001x	x1010x	x1011x	x1100x	x1101x	x1110x	x1111x
 			0yyyy0	2	12	4	1	7	10	11	6	8	5	3	15	13	0	14	9
@@ -1327,7 +1341,7 @@ public class fBlock {
 		}
 	}
 
-	public void s6Bock(){
+	public void s6Block(){
 		/*
 		S6	x0000x	x0001x	x0010x	x0011x	x0100x	x0101x	x0110x	x0111x	x1000x	x1001x	x1010x	x1011x	x1100x	x1101x	x1110x	x1111x
 			0yyyy0	12	1	10	15	9	2	6	8	0	13	3	4	14	7	5	11
@@ -1578,7 +1592,7 @@ public class fBlock {
 		}
 	}
 
-	public void s7Bock(){
+	public void s7Block(){
 		/*
 		S7	x0000x	x0001x	x0010x	x0011x	x0100x	x0101x	x0110x	x0111x	x1000x	x1001x	x1010x	x1011x	x1100x	x1101x	x1110x	x1111x
 			0yyyy0	4	11	2	14	15	0	8	13	3	12	9	7	5	10	6	1
@@ -1829,7 +1843,7 @@ public class fBlock {
 		}
 	}
 
-	public void s8Bock(){
+	public void s8Block(){
 		/*
 		S8	x0000x	x0001x	x0010x	x0011x	x0100x	x0101x	x0110x	x0111x	x1000x	x1001x	x1010x	x1011x	x1100x	x1101x	x1110x	x1111x
 			0yyyy0	13	2	8	4	6	15	11	1	10	9	3	14	5	0	12	7
