@@ -1,6 +1,16 @@
 
 public class DES {
-
+	/*Our DES implementation assumes a few things:\
+	 * 	1. Input strings are formatted in binary and are exactly 64 bits
+	 * 		a. This can be modified/fixed on the implementation side where the input is broken up into
+	 * 			64-bit sized chunks
+	 * 	2. Key strings are formatted in binary and are exactly 64 bits
+	 * 		a. The key is printed out so you can save it, but for the demo it randomly generates keys
+	 * 	3. There is a boolean that must be set for either encryption or decryption
+	 * 		a. This simplifies the design so you simply call "DESLoop(inputString, key, isEncrypting)"
+	 * 			This can be implemented from any function and should be done, rather than modifying the
+	 * 			DESLoop method.
+	 */
 	public static void main(String[] args) {
 		//Create random input string
 		int[] inputString = new int[64];
