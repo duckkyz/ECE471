@@ -134,8 +134,6 @@ public class keyMixing {
 					subKeyInput[i + 28] = rotatedRight[i + 1];
 				}
 			}
-
 		}
 	}
-	
 }

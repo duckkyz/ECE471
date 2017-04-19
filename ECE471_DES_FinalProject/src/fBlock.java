@@ -2140,7 +2140,5 @@ public class fBlock {
 		fOutput[29] = sBlockOutput[10];
 		fOutput[30] = sBlockOutput[3];
 		fOutput[31] = sBlockOutput[24];
-	
 	}
-	
 }
