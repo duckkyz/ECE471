@@ -63,8 +63,5 @@ public class DES {
 				return;
 			}
 		}	
-		
-		
 	}
-	
 }
