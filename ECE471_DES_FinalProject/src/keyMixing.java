@@ -4,8 +4,6 @@ public class keyMixing {
 	public static int[] originalKey = new int[64];
 	private static int[] modifiedKey = new int[56];
 	
-	
-	
 	public static void PC1(){
 		PC1Left(originalKey);
 		PC1Right(originalKey);
@@ -113,8 +111,8 @@ public class keyMixing {
 					16	1
 		*/
 		
-		int[] rotatedLeft = new int[26];
-		int[] rotatedRight = new int[26];
+		int[] rotatedLeft = new int[28];
+		int[] rotatedRight = new int[28];
 		for(int i = 0; i < rotatedLeft.length; i++){
 			rotatedLeft[i] = modifiedKey[i];
 			rotatedRight[i] = modifiedKey[i + 28];

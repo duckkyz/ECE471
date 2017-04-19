@@ -2,7 +2,11 @@
 public class DES {
 
 	public static void main(String[] args) {
+		double startTime = System.currentTimeMillis();
 		DESLoop();
+		double endTime = System.currentTimeMillis();
+		double totalTime = endTime - startTime;
+		System.out.println("Total time: " + totalTime);
 	}
 	
 	public static void DESLoop(){
@@ -17,11 +21,30 @@ public class DES {
 				inputText[i] = 1;
 			}
 		}
-		
+		System.out.println("inputText = ");
+		for(int i = 0; i < inputText.length; i++){
+			System.out.print(" "+ inputText[i] + ",");
+		}
+		System.out.println("");
+
 		//IP
 		int[] initPerm = permutation.initialPermutation(inputText);
-
+		
 		keyMixing.originalKey = new int[64];
+		for(int i = 0; i < keyMixing.originalKey.length; i++){
+			if((Math.random() * 100) > 50){
+				keyMixing.originalKey[i] = 0;
+			}
+			else{
+				keyMixing.originalKey[i] = 1;
+			}
+		}
+		
+		System.out.println("Key = ");
+		for(int i = 0; i < keyMixing.originalKey.length; i++){
+			System.out.print(" "+ keyMixing.originalKey[i] + ",");
+		}
+		System.out.println("");
 		keyMixing.PC1();
 		//Feistel chain
 		int[] left = new int[32];
@@ -63,5 +86,11 @@ public class DES {
 				return;
 			}
 		}	
+		System.out.println("finalPerm = ");
+		for(int i = 0; i < finalPerm.length; i++){
+			System.out.print(" "+ finalPerm[i] + ",");
+		}
+		System.out.println("");
+
 	}
 }

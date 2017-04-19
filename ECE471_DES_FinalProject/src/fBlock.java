@@ -56,7 +56,7 @@ public class fBlock {
 	public void expansion(){
 		for(int i = 0; i < 8; i++){
 			if(i == 0){
-				expansionBits[i][0] = inputString[32];
+				expansionBits[i][0] = inputString[31];
 			}
 			else{
 				expansionBits[i][0] = inputString[i*4 + -1];
@@ -323,14 +323,14 @@ public class fBlock {
 			break;
 		}
 		
-		sBlockOutput[8*4 - 1] = temp%8;
-		temp = temp - (8*(temp%8));
-		sBlockOutput[8*4 - 2] = temp%4;
-		temp = temp - (8*(temp%4));
-		sBlockOutput[8*4 - 3] = temp%2;
-		temp = temp - (8*(temp%2));
-		sBlockOutput[8*4 - 4] = temp%1;
-		temp = temp - (8*(temp%1));
+		sBlockOutput[8*4 - 1] = temp/8;
+		temp = temp - (8*(temp/8));
+		sBlockOutput[8*4 - 2] = temp/4;
+		temp = temp - (4*(temp/4));
+		sBlockOutput[8*4 - 3] = temp/2;
+		temp = temp - (2*(temp/2));
+		sBlockOutput[8*4 - 4] = temp/1;
+		temp = temp - (1*(temp/1));
 		
 		if(temp != 0){
 			System.out.println("ERROR! temp should equal 0 after output of S block 1! temp = " + temp);
@@ -574,17 +574,18 @@ public class fBlock {
 			break;
 		}
 		
-		sBlockOutput[8*4 - (4*1) - 1] = temp%8;
-		temp = temp - (8*(temp%8));
-		sBlockOutput[8*4 - (4*1) - 2] = temp%4;
-		temp = temp - (8*(temp%4));
-		sBlockOutput[8*4 - (4*1) - 3] = temp%2;
-		temp = temp - (8*(temp%2));
-		sBlockOutput[8*4 - (4*1) - 4] = temp%1;
-		temp = temp - (8*(temp%1));
+		sBlockOutput[8*4 - (4*1) - 1] = temp/8;
+		temp = temp - (8*(temp/8));
+		sBlockOutput[8*4 - (4*1) - 2] = temp/4;
+		temp = temp - (4*(temp/4));
+		sBlockOutput[8*4 - (4*1) - 3] = temp/2;
+		temp = temp - (2*(temp/2));
+		sBlockOutput[8*4 - (4*1) - 4] = temp/1;
+		temp = temp - (1*(temp/1));
+
 		
 		if(temp != 0){
-			System.out.println("ERROR! temp should equal 0 after output of S block 1! temp = " + temp);
+			System.out.println("ERROR! temp should equal 0 after output of S block 2! temp = " + temp);
 		}
 	}
 
@@ -825,17 +826,18 @@ public class fBlock {
 			break;
 		}
 		
-		sBlockOutput[8*4 - (4*2) - 1] = temp%8;
-		temp = temp - (8*(temp%8));
-		sBlockOutput[8*4 - (4*2) - 2] = temp%4;
-		temp = temp - (8*(temp%4));
-		sBlockOutput[8*4 - (4*2) - 3] = temp%2;
-		temp = temp - (8*(temp%2));
-		sBlockOutput[8*4 - (4*2) - 4] = temp%1;
-		temp = temp - (8*(temp%1));
+		sBlockOutput[8*4 - (4*2) - 1] = temp/8;
+		temp = temp - (8*(temp/8));
+
+		sBlockOutput[8*4 - (4*2) - 2] = temp/4;
+		temp = temp - (4*(temp/4));
+		sBlockOutput[8*4 - (4*2) - 3] = temp/2;
+		temp = temp - (2*(temp/2));
+		sBlockOutput[8*4 - (4*2) - 4] = temp/1;
+		temp = temp - (1*(temp/1));
 		
 		if(temp != 0){
-			System.out.println("ERROR! temp should equal 0 after output of S block 1! temp = " + temp);
+			System.out.println("ERROR! temp should equal 0 after output of S block 3! temp = " + temp);
 		}
 	}
 	
@@ -1076,17 +1078,18 @@ public class fBlock {
 			break;
 		}
 		
-		sBlockOutput[8*4 - (4*3) - 1] = temp%8;
-		temp = temp - (8*(temp%8));
-		sBlockOutput[8*4 - (4*3) - 2] = temp%4;
-		temp = temp - (8*(temp%4));
-		sBlockOutput[8*4 - (4*3) - 3] = temp%2;
-		temp = temp - (8*(temp%2));
-		sBlockOutput[8*4 - (4*3) - 4] = temp%1;
-		temp = temp - (8*(temp%1));
+		sBlockOutput[8*4 - (4*3) - 1] = temp/8;
+		temp = temp - (8*(temp/8));
+
+		sBlockOutput[8*4 - (4*3) - 2] = temp/4;
+		temp = temp - (4*(temp/4));
+		sBlockOutput[8*4 - (4*3) - 3] = temp/2;
+		temp = temp - (2*(temp/2));
+		sBlockOutput[8*4 - (4*3) - 4] = temp/1;
+		temp = temp - (1*(temp/1));
 		
 		if(temp != 0){
-			System.out.println("ERROR! temp should equal 0 after output of S block 1! temp = " + temp);
+			System.out.println("ERROR! temp should equal 0 after output of S block 4! temp = " + temp);
 		}
 	}
 	
@@ -1327,17 +1330,18 @@ public class fBlock {
 			break;
 		}
 		
-		sBlockOutput[8*4 - (4*4) - 1] = temp%8;
-		temp = temp - (8*(temp%8));
-		sBlockOutput[8*4 - (4*4) - 2] = temp%4;
-		temp = temp - (8*(temp%4));
-		sBlockOutput[8*4 - (4*4) - 3] = temp%2;
-		temp = temp - (8*(temp%2));
-		sBlockOutput[8*4 - (4*4) - 4] = temp%1;
-		temp = temp - (8*(temp%1));
+		sBlockOutput[8*4 - (4*4) - 1] = temp/8;
+		temp = temp - (8*(temp/8));
+
+		sBlockOutput[8*4 - (4*4) - 2] = temp/4;
+		temp = temp - (4*(temp/4));
+		sBlockOutput[8*4 - (4*4) - 3] = temp/2;
+		temp = temp - (2*(temp/2));
+		sBlockOutput[8*4 - (4*4) - 4] = temp/1;
+		temp = temp - (1*(temp/1));
 		
 		if(temp != 0){
-			System.out.println("ERROR! temp should equal 0 after output of S block 1! temp = " + temp);
+			System.out.println("ERROR! temp should equal 0 after output of S block 5! temp = " + temp);
 		}
 	}
 
@@ -1578,17 +1582,18 @@ public class fBlock {
 			break;
 		}
 		
-		sBlockOutput[8*4 - (4*5) - 1] = temp%8;
-		temp = temp - (8*(temp%8));
-		sBlockOutput[8*4 - (4*5) - 2] = temp%4;
-		temp = temp - (8*(temp%4));
-		sBlockOutput[8*4 - (4*5) - 3] = temp%2;
-		temp = temp - (8*(temp%2));
-		sBlockOutput[8*4 - (4*5) - 4] = temp%1;
-		temp = temp - (8*(temp%1));
+		sBlockOutput[8*4 - (4*5) - 1] = temp/8;
+		temp = temp - (8*(temp/8));
+
+		sBlockOutput[8*4 - (4*5) - 2] = temp/4;
+		temp = temp - (4*(temp/4));
+		sBlockOutput[8*4 - (4*5) - 3] = temp/2;
+		temp = temp - (2*(temp/2));
+		sBlockOutput[8*4 - (4*5) - 4] = temp/1;
+		temp = temp - (1*(temp/1));
 		
 		if(temp != 0){
-			System.out.println("ERROR! temp should equal 0 after output of S block 1! temp = " + temp);
+			System.out.println("ERROR! temp should equal 0 after output of S block 6! temp = " + temp);
 		}
 	}
 
@@ -1829,17 +1834,18 @@ public class fBlock {
 			break;
 		}
 		
-		sBlockOutput[8*4 - (4*6) - 1] = temp%8;
-		temp = temp - (8*(temp%8));
-		sBlockOutput[8*4 - (4*6) - 2] = temp%4;
-		temp = temp - (8*(temp%4));
-		sBlockOutput[8*4 - (4*6) - 3] = temp%2;
-		temp = temp - (8*(temp%2));
-		sBlockOutput[8*4 - (4*6) - 4] = temp%1;
-		temp = temp - (8*(temp%1));
+		sBlockOutput[8*4 - (4*6) - 1] = temp/8;
+		temp = temp - (8*(temp/8));
+
+		sBlockOutput[8*4 - (4*6) - 2] = temp/4;
+		temp = temp - (4*(temp/4));
+		sBlockOutput[8*4 - (4*6) - 3] = temp/2;
+		temp = temp - (2*(temp/2));
+		sBlockOutput[8*4 - (4*6) - 4] = temp/1;
+		temp = temp - (1*(temp/1));
 		
 		if(temp != 0){
-			System.out.println("ERROR! temp should equal 0 after output of S block 1! temp = " + temp);
+			System.out.println("ERROR! temp should equal 0 after output of S block 7! temp = " + temp);
 		}
 	}
 
@@ -2081,17 +2087,17 @@ public class fBlock {
 			break;
 		}
 		
-		sBlockOutput[8*4 - (4*7) - 1] = temp%8;
-		temp = temp - (8*(temp%8));
-		sBlockOutput[8*4 - (4*7) - 2] = temp%4;
-		temp = temp - (8*(temp%4));
-		sBlockOutput[8*4 - (4*7) - 3] = temp%2;
-		temp = temp - (8*(temp%2));
-		sBlockOutput[8*4 - (4*7) - 4] = temp%1;
-		temp = temp - (8*(temp%1));
+		sBlockOutput[8*4 - (4*7) - 1] = temp/8;
+		temp = temp - (8*(temp/8));
+		sBlockOutput[8*4 - (4*7) - 2] = temp/4;
+		temp = temp - (4*(temp/4));
+		sBlockOutput[8*4 - (4*7) - 3] = temp/2;
+		temp = temp - (2*(temp/2));
+		sBlockOutput[8*4 - (4*7) - 4] = temp/1;
+		temp = temp - (1*(temp/1));
 		
 		if(temp != 0){
-			System.out.println("ERROR! temp should equal 0 after output of S block 1! temp = " + temp);
+			System.out.println("ERROR! temp should equal 0 after output of S block 8! temp = " + temp);
 		}
 	}
 
