@@ -12,16 +12,8 @@ public class DES {
 	 * 			DESLoop method.
 	 */
 	public static void main(String[] args) {
-		//Create random input string
-		int[] inputString = new int[64];
-		for(int i = 0; i < inputString.length; i++){
-			if((Math.random() * 100) > 50){
-				inputString[i] = 0;
-			}
-			else{
-				inputString[i] = 1;
-			}
-		}
+		//Convert input string to binary
+		String inputText = "DEADBEEF";
 		
 		//Create random key
 		int[] key = new int[64];
@@ -37,12 +29,12 @@ public class DES {
 		//Start timer
 		double startTime = System.currentTimeMillis();
 		//Encryption
-		int[] outputString = DESLoop(inputString, key, true);
+		String outputString = DESLoop(inputText, key, true);
 		double firstEndTime = System.currentTimeMillis();
 		
 		double secondStartTime = System.currentTimeMillis();
 		//Decryption
-		int[] secondOutputString = DESLoop(outputString, key, false);
+		String secondOutputString = DESLoop(outputString, key, false);
 		double endTime = System.currentTimeMillis();
 		
 		double firstTime = firstEndTime - startTime;
@@ -51,14 +43,40 @@ public class DES {
 		System.out.println("First time: " + firstTime + " ms");
 		System.out.println("Second time: " + secondTime + " ms");
 		System.out.println("Total time: " + totalTime + " ms");
+		
 	}
 	
-	public static int[] DESLoop(int[] inputString, int[] key, boolean isEncrypting){
+	public static String DESLoop(String inputString, int[] key, boolean isEncrypting){
 		//Get input/outputs initialized
-		int[] inputText = inputString;
+		int[] inputText = new int[64];
 		int[] outputText = new int[64];
+		String outputString = "";
+		for(int i = 0; i < 8; i++){
+			int temp = (int) inputString.charAt(i);
+			for(int j = 7; j >= 0; j--){
+				int power = (int)Math.pow(2, j);
+				inputText[(i+1)*8 - (j+1)] = (temp/power);
+				temp = temp - ((temp/power) * power);
+			}
+			
+		}
+		
+		
 		
 		//Visually print input text
+		for(int i = 0; i < inputText.length/8; i++){
+			int temp = (128 * inputText[i*8 + 0])
+						+ (64 * inputText[i*8 + 1])
+						+ (32 * inputText[i*8 + 2])
+						+ (16 * inputText[i*8 + 3])
+						+ (8 * inputText[i*8 + 4])
+						+ (4 * inputText[i*8 + 5])
+						+ (2 * inputText[i*8 + 6])
+						+ (1 * inputText[i*8 + 7]);
+			char tempLetter = (char) temp;
+			System.out.print(tempLetter);
+		}
+		System.out.println("");
 		System.out.println("inputText = ");
 		for(int i = 0; i < inputText.length; i++){
 			System.out.print(" "+ inputText[i] + ",");
@@ -157,6 +175,19 @@ public class DES {
 			System.out.print(" "+ outputText[i] + ",");
 		}
 		System.out.println("");
-		return outputText;
+		
+		for(int i = 0; i < outputText.length/8; i++){
+			int temp = (128 * outputText[i*8 + 0])
+						+ (64 * outputText[i*8 + 1])
+						+ (32 * outputText[i*8 + 2])
+						+ (16 * outputText[i*8 + 3])
+						+ (8 * outputText[i*8 + 4])
+						+ (4 * outputText[i*8 + 5])
+						+ (2 * outputText[i*8 + 6])
+						+ (1 * outputText[i*8 + 7]);
+			char tempLetter = (char) temp;
+			outputString = outputString + tempLetter;
+		}
+		return outputString;
 	}
 }
