@@ -1,4 +1,8 @@
 package testBench;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -7,6 +11,21 @@ import des.DES;
 
 public class testBench {
 	public static void main(String[] args) {
+		
+		String filePath = "testFiles/cipher1.txt";
+		String inputString = "";
+		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+		    int iLine = 0;
+		    String line = "";
+		    while ((line = br.readLine()) != null) {
+		        System.out.println( "Line " + iLine + " has " +
+		                            line.length() + " characters." );
+		        iLine++;
+		    }
+		} catch( IOException ioe ){
+		    // ...
+		}
+		
 		//Convert input string to binary
 		String inputText = "DEADBEEF";
 		
@@ -59,7 +78,7 @@ public class testBench {
 			tempLetter.letter = (char)i;
 			int counter = 0;
 			for(int j=0; j<inputString.length(); j++){
-				if(DecryptorModule.charToInt(inputString.charAt(j)) == i){
+				if(((int)inputString.charAt(j)) == i){
 					++counter;
 				}
 			}
