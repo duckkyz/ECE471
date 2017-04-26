@@ -34,16 +34,20 @@ public class testBench {
 		 * 	Large file test:
 		 * 		Tests 1.3 and 2.3
 		 */	
-		 for(int fileNum = 1; fileNum < 4; fileNum++){
-			String filePath = "testFiles/test" + fileNum +".txt";
+		 for(int fileNum = 1; fileNum < 31; fileNum++){
+			String filePath = "testFiles/test_" + fileNum +".txt";
+			if(fileNum < 9){
+				filePath = "testFiles/test_0" + (fileNum+1) + ".txt";
+			}
+			
 			String inputText = getFile(filePath);
-			if(fileNum == 1){
+			if(fileNum < 11){
 				System.out.print("Small ");
 			}
-			else if(fileNum == 2){
+			else if(fileNum < 21){
 				System.out.print("Medium ");
 			}
-			else if(fileNum == 3){
+			else if(fileNum < 31){
 				System.out.print("Large ");
 			}
 			System.out.println("file test:");
