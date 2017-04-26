@@ -48,18 +48,10 @@ public class DES {
 	
 	public static String DESLoop(String inputString, int[] key, boolean isEncrypting){
 		//Get input/outputs initialized
-		int[] inputText = new int[64];
+		int[] inputText = DES.stringToBin(inputString);
 		int[] outputText = new int[64];
 		String outputString = "";
-		for(int i = 0; i < 8; i++){
-			int temp = (int) inputString.charAt(i);
-			for(int j = 7; j >= 0; j--){
-				int power = (int)Math.pow(2, j);
-				inputText[(i+1)*8 - (j+1)] = (temp/power);
-				temp = temp - ((temp/power) * power);
-			}
-			
-		}
+		
 		
 		
 		
@@ -176,18 +168,40 @@ public class DES {
 		}
 		System.out.println("");
 		
-		for(int i = 0; i < outputText.length/8; i++){
-			int temp = (128 * outputText[i*8 + 0])
-						+ (64 * outputText[i*8 + 1])
-						+ (32 * outputText[i*8 + 2])
-						+ (16 * outputText[i*8 + 3])
-						+ (8 * outputText[i*8 + 4])
-						+ (4 * outputText[i*8 + 5])
-						+ (2 * outputText[i*8 + 6])
-						+ (1 * outputText[i*8 + 7]);
+		outputString = DES.binToString(outputText);
+		
+		return outputString;
+	}
+	
+	public static String binToString(int[] inputBin){
+		String outputString = "";
+		for(int i = 0; i < inputBin.length/8; i++){
+			int temp = (128 * inputBin[i*8 + 0])
+						+ (64 * inputBin[i*8 + 1])
+						+ (32 * inputBin[i*8 + 2])
+						+ (16 * inputBin[i*8 + 3])
+						+ (8 * inputBin[i*8 + 4])
+						+ (4 * inputBin[i*8 + 5])
+						+ (2 * inputBin[i*8 + 6])
+						+ (1 * inputBin[i*8 + 7]);
 			char tempLetter = (char) temp;
 			outputString = outputString + tempLetter;
 		}
 		return outputString;
 	}
+	
+	public static int[] stringToBin(String inputString){
+		int[] inputText = new int[64];
+		for(int i = 0; i < 8; i++){
+			int temp = (int) inputString.charAt(i);
+			for(int j = 7; j >= 0; j--){
+				int power = (int)Math.pow(2, j);
+				inputText[(i+1)*8 - (j+1)] = (temp/power);
+				temp = temp - ((temp/power) * power);
+			}
+		}
+		return inputText;
+	}
 }
+
+
