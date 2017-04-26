@@ -12,29 +12,6 @@ import modes.*;
 
 public class testBench {
 	public static void main(String[] args) {
-		
-		int fileNum = 1;
-		String filePath = "testFiles/test" + fileNum +".txt";
-		String inputText = "";
-		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-		    String line = "";
-		    while ((line = br.readLine()) != null) {
-		    	inputText += line;
-		    }
-		} catch( IOException ioe ){
-		    System.out.println("File not found");
-		}
-		
-		//Get IC for plain text
-		ArrayList<cipherLetter> stringList = getLetterFreq(inputText);
-		for(int i = 0; i<stringList.size(); i++){
-			System.out.println(stringList.get(i).letter + ": " + stringList.get(i).freq + " - " + (double)stringList.get(i).freq/inputText.length() * 100 + "%");
-			System.out.println(i);
-		}
-		
-		double IC = getIC(stringList, inputText);
-		System.out.println("File " + fileNum + " encryption Index of Coincidence: " + IC);
-		
 		//Create random key
 		int[] key = new int[64];
 		for(int i = 0; i < 64; i++){
@@ -45,37 +22,176 @@ public class testBench {
 				key[i] = 1;
 			}
 		}
-		testBench.smallFileTest(inputText, key);		
+		
+		/* Test 1.1 - 2.3:
+		 * fileNum == 1
+		 * 	Small file test:
+		 * 		Tests 1.1 and 2.1
+		 * fileNum == 2
+		 * 	Medium file test:
+		 * 		Tests 1.2 and 2.2
+		 * fileNum == 3
+		 * 	Large file test:
+		 * 		Tests 1.3 and 2.3
+		 */	
+		 for(int fileNum = 1; fileNum < 4; fileNum++){
+			String filePath = "testFiles/test" + fileNum +".txt";
+			String inputText = getFile(filePath);
+			testBench.time_IC_Test(inputText, key);
+		}
+		
 	}
 	
-	public static void smallFileTest(String inputText, int[] key){
+	public static void time_IC_Test(String inputText, int[] key){
 		for(int i = 0; i < 5; i++){
-		//Start enc timer
-		double encStartTime = System.currentTimeMillis();
-		//Encryption
-		String encOutputString= modes.ECB(inputText, key, true);
-		double encEndTime = System.currentTimeMillis();
-		
-		double decStartTime = System.currentTimeMillis();
-		//Decryption
-		String decOutputString = modes.ECB(encOutputString, key, false);
-		double decEndTime = System.currentTimeMillis();
-		
-		double encTime = encEndTime - encStartTime;
-		double decTime = decEndTime - decStartTime;
-		double totalTime = decEndTime - encStartTime;
-		System.out.println("Encryption time: " + encTime + " ms");
-		System.out.println("Decryption time: " + decTime + " ms");
-		System.out.println("Total time: " + totalTime + " ms");
-		
-		modes.ECB(inputText, key);
-		modes.CBC(inputText, key);
-		modes.CFB(inputText, key);
-		modes.OFB(inputText, key);
-		modes.CNT(inputText, key);
+			//Start enc timer
+			double encStartTime = System.currentTimeMillis();
+			//Encryption
+			String encOutputString = "";
+			if(i == 0){
+				encOutputString = modes.ECB(inputText, key, true);
+			}
+			else if(i == 1){
+				encOutputString = modes.CBC(inputText, key, true);
+			}
+			else if(i == 2){
+				encOutputString = modes.CFB(inputText, key, true);
+			}
+			else if(i == 3){
+				encOutputString = modes.OFB(inputText, key, true);
+			}
+			else if(i == 4){
+				encOutputString = modes.CNT(inputText, key, true);
+			}
+			double encEndTime = System.currentTimeMillis();
+			
+			double decStartTime = System.currentTimeMillis();
+			//Decryption
+			String decOutputString = "";
+			if(i == 0){
+				decOutputString = modes.ECB(encOutputString, key, false);
+			}
+			else if(i == 1){
+				decOutputString = modes.CBC(encOutputString, key, false);
+			}
+			else if(i == 2){
+				decOutputString = modes.CFB(encOutputString, key, false);
+			}
+			else if(i == 3){
+				decOutputString = modes.OFB(encOutputString, key, false);
+			}
+			else if(i == 4){
+				decOutputString = modes.CNT(encOutputString, key, false);
+			}
+			double decEndTime = System.currentTimeMillis();
+			
+			double encTime = encEndTime - encStartTime;
+			double decTime = decEndTime - decStartTime;
+			double totalTime = decEndTime - encStartTime;
+			testBench.time_IC_testFooter(encTime, decTime, totalTime, inputText, encOutputString, decOutputString, i);
 		}
+	}
 	
-		
+	public static void time_IC_testFooter(double encTime, double decTime, double totalTime, String inputText, 
+			String encOutputString, String decOutputString, int testNum){
+		if(testNum == 0){
+			System.out.println("ECB:");
+		}
+		else if(testNum == 1){
+			System.out.println("CBC:");
+		}
+		else if(testNum == 2){
+			System.out.println("CFB:");
+		}
+		else if(testNum == 3){
+			System.out.println("OFB:");
+		}
+		else if(testNum == 4){
+			System.out.println("CNT:");
+		}
+		System.out.println("Original Index of Coincidence: " + getIC(getLetterFreq(inputText), inputText));
+		System.out.println("Encryption time: " + encTime + " ms");
+		System.out.println("Encryption Index of Coincidence: " + getIC(getLetterFreq(encOutputString), encOutputString));
+		System.out.println("Decryption time: " + decTime + " ms");
+		System.out.println("Decryption Index of Coincidence: " + getIC(getLetterFreq(decOutputString), decOutputString));
+		System.out.println("Total time: " + totalTime + " ms");
+	}
+	
+	public static void corruption_Test(String inputText, int[] key){
+		for(int i = 0; i < 5; i++){
+			//Start enc timer
+			double encStartTime = System.currentTimeMillis();
+			//Encryption
+			String encOutputString = "";
+			if(i == 0){
+				encOutputString = modes.ECB(inputText, key, true);
+			}
+			else if(i == 1){
+				encOutputString = modes.CBC(inputText, key, true);
+			}
+			else if(i == 2){
+				encOutputString = modes.CFB(inputText, key, true);
+			}
+			else if(i == 3){
+				encOutputString = modes.OFB(inputText, key, true);
+			}
+			else if(i == 4){
+				encOutputString = modes.CNT(inputText, key, true);
+			}
+			double encEndTime = System.currentTimeMillis();
+			int[] tempBinVals = DES.stringToBin(encOutputString);
+			for(int j = 0; j < tempBinVals.length; j++){
+				//Here there is a 10% chance for corruption
+				if(Math.random()*100 > 90){
+					if(tempBinVals[j] == 1){
+						tempBinVals[j] = 0;
+					}
+					else{
+						tempBinVals[j] = 1;
+					}
+				}
+			}
+			encOutputString = DES.binToString(tempBinVals);
+			
+			double decStartTime = System.currentTimeMillis();
+			//Decryption
+			String decOutputString = "";
+			if(i == 0){
+				decOutputString = modes.ECB(encOutputString, key, false);
+			}
+			else if(i == 1){
+				decOutputString = modes.CBC(encOutputString, key, false);
+			}
+			else if(i == 2){
+				decOutputString = modes.CFB(encOutputString, key, false);
+			}
+			else if(i == 3){
+				decOutputString = modes.OFB(encOutputString, key, false);
+			}
+			else if(i == 4){
+				decOutputString = modes.CNT(encOutputString, key, false);
+			}
+			double decEndTime = System.currentTimeMillis();
+			
+			double encTime = encEndTime - encStartTime;
+			double decTime = decEndTime - decStartTime;
+			double totalTime = decEndTime - encStartTime;
+			testBench.time_IC_testFooter(encTime, decTime, totalTime, inputText, encOutputString, decOutputString, i);
+		}
+	}
+
+	
+	public static String getFile(String filePath){
+		String inputText = "";
+		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+		    String line = "";
+		    while ((line = br.readLine()) != null) {
+		    	inputText += line;
+		    }
+		} catch( IOException ioe ){
+		    System.out.println("File not found");
+		}
+		return inputText;
 	}
 	
 	public static ArrayList<cipherLetter> getLetterFreq(String inputString){

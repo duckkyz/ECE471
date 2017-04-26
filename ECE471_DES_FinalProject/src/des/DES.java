@@ -155,8 +155,15 @@ public class DES {
 	}
 	
 	public static int[] stringToBin(String inputString){
-		int[] inputText = new int[64];
-		for(int i = 0; i < 8; i++){
+		if(inputString.length()%8 != 0){
+			//System.out.println("Going to append " + (8-inputString.length()%8) + " nulls");
+			int itters = (8-inputString.length()%8);
+			for(int i = 0; i < itters; i++){
+				inputString = inputString + Character.toString((char)0);
+			}
+		}
+		int[] inputText = new int[inputString.length()*8];
+		for(int i = 0; i < inputString.length(); i++){
 			int temp = (int) inputString.charAt(i);
 			for(int j = 7; j >= 0; j--){
 				int power = (int)Math.pow(2, j);
