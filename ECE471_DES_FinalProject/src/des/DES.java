@@ -1,3 +1,4 @@
+package des;
 
 public class DES {
 	/*Our DES implementation assumes a few things:\

@@ -1,3 +1,4 @@
+package des;
 
 /*
  * The F-function, depicted in Figure 2, operates on half a block (32 bits) at a time and consists of four stages:
