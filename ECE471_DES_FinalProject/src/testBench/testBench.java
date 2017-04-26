@@ -7,38 +7,33 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import des.DES;
+import des.*;
+import modes.*;
 
 public class testBench {
 	public static void main(String[] args) {
 		
-		String filePath = "testFiles/cipher1.txt";
-		String inputString = "";
+		int fileNum = 1;
+		String filePath = "testFiles/test" + fileNum +".txt";
+		String inputText = "";
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-		    int iLine = 0;
 		    String line = "";
 		    while ((line = br.readLine()) != null) {
-		        System.out.println( "Line " + iLine + " has " +
-		                            line.length() + " characters." );
-		        iLine++;
+		    	inputText += line;
 		    }
 		} catch( IOException ioe ){
-		    // ...
+		    System.out.println("File not found");
 		}
 		
-		//Convert input string to binary
-		String inputText = "DEADBEEF";
-		
-		
+		//Get IC for plain text
 		ArrayList<cipherLetter> stringList = getLetterFreq(inputText);
-
 		for(int i = 0; i<stringList.size(); i++){
 			System.out.println(stringList.get(i).letter + ": " + stringList.get(i).freq + " - " + (double)stringList.get(i).freq/inputText.length() * 100 + "%");
 			System.out.println(i);
 		}
 		
 		double IC = getIC(stringList, inputText);
-		System.out.println("Index of Coincidence: " + IC);
+		System.out.println("File " + fileNum + " encryption Index of Coincidence: " + IC);
 		
 		//Create random key
 		int[] key = new int[64];
@@ -50,35 +45,48 @@ public class testBench {
 				key[i] = 1;
 			}
 		}
-		
-		//Start timer
-		double startTime = System.currentTimeMillis();
+		testBench.smallFileTest(inputText, key);		
+	}
+	
+	public static void smallFileTest(String inputText, int[] key){
+		for(int i = 0; i < 5; i++){
+		//Start enc timer
+		double encStartTime = System.currentTimeMillis();
 		//Encryption
-		String outputString = DES.DESLoop(inputText, key, true);
-		double firstEndTime = System.currentTimeMillis();
+		String encOutputString= modes.ECB(inputText, key, true);
+		double encEndTime = System.currentTimeMillis();
 		
-		double secondStartTime = System.currentTimeMillis();
+		double decStartTime = System.currentTimeMillis();
 		//Decryption
-		String secondOutputString = DES.DESLoop(outputString, key, false);
-		double endTime = System.currentTimeMillis();
+		String decOutputString = modes.ECB(encOutputString, key, false);
+		double decEndTime = System.currentTimeMillis();
 		
-		double firstTime = firstEndTime - startTime;
-		double secondTime = endTime - secondStartTime;
-		double totalTime = endTime - startTime;
-		System.out.println("First time: " + firstTime + " ms");
-		System.out.println("Second time: " + secondTime + " ms");
+		double encTime = encEndTime - encStartTime;
+		double decTime = decEndTime - decStartTime;
+		double totalTime = decEndTime - encStartTime;
+		System.out.println("Encryption time: " + encTime + " ms");
+		System.out.println("Decryption time: " + decTime + " ms");
 		System.out.println("Total time: " + totalTime + " ms");
+		
+		modes.ECB(inputText, key);
+		modes.CBC(inputText, key);
+		modes.CFB(inputText, key);
+		modes.OFB(inputText, key);
+		modes.CNT(inputText, key);
+		}
+	
 		
 	}
 	
 	public static ArrayList<cipherLetter> getLetterFreq(String inputString){
+		String temp = inputString.toUpperCase();
 		ArrayList<cipherLetter> stringList = new ArrayList<cipherLetter>();
 		for(int i=(int)'A'; i<=(int)'Z'; i++){
 			cipherLetter tempLetter = new cipherLetter();
 			tempLetter.letter = (char)i;
 			int counter = 0;
-			for(int j=0; j<inputString.length(); j++){
-				if(((int)inputString.charAt(j)) == i){
+			for(int j=0; j<temp.length(); j++){
+				if(((int)(temp.charAt(j))) == i){
 					++counter;
 				}
 			}
