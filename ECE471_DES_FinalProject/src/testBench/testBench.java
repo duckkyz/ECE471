@@ -37,6 +37,16 @@ public class testBench {
 		 for(int fileNum = 1; fileNum < 4; fileNum++){
 			String filePath = "testFiles/test" + fileNum +".txt";
 			String inputText = getFile(filePath);
+			if(fileNum == 1){
+				System.out.print("Small ");
+			}
+			else if(fileNum == 2){
+				System.out.print("Medium ");
+			}
+			else if(fileNum == 3){
+				System.out.print("Large ");
+			}
+			System.out.println("file test:");
 			testBench.time_IC_Test(inputText, key);
 		}
 		
@@ -95,26 +105,26 @@ public class testBench {
 	public static void time_IC_testFooter(double encTime, double decTime, double totalTime, String inputText, 
 			String encOutputString, String decOutputString, int testNum){
 		if(testNum == 0){
-			System.out.println("ECB:");
+			System.out.println("	ECB:");
 		}
 		else if(testNum == 1){
-			System.out.println("CBC:");
+			System.out.println("	CBC:");
 		}
 		else if(testNum == 2){
-			System.out.println("CFB:");
+			System.out.println("	CFB:");
 		}
 		else if(testNum == 3){
-			System.out.println("OFB:");
+			System.out.println("	OFB:");
 		}
 		else if(testNum == 4){
-			System.out.println("CNT:");
+			System.out.println("	CNT:");
 		}
-		System.out.println("Original Index of Coincidence: " + getIC(getLetterFreq(inputText), inputText));
-		System.out.println("Encryption time: " + encTime + " ms");
-		System.out.println("Encryption Index of Coincidence: " + getIC(getLetterFreq(encOutputString), encOutputString));
-		System.out.println("Decryption time: " + decTime + " ms");
-		System.out.println("Decryption Index of Coincidence: " + getIC(getLetterFreq(decOutputString), decOutputString));
-		System.out.println("Total time: " + totalTime + " ms");
+		System.out.println("		Original Index of Coincidence: " + getIC(getLetterFreq(inputText), inputText));
+		System.out.println("		Encryption time: " + encTime + " ms");
+		System.out.println("		Encryption Index of Coincidence: " + getIC(getLetterFreq(encOutputString), encOutputString));
+		System.out.println("		Decryption time: " + decTime + " ms");
+		System.out.println("		Decryption Index of Coincidence: " + getIC(getLetterFreq(decOutputString), decOutputString));
+		System.out.println("		Total time: " + totalTime + " ms");
 	}
 	
 	public static void corruption_Test(String inputText, int[] key){

@@ -5,6 +5,7 @@ public class DES {
 	 * 	1. Input strings are formatted in binary and are exactly 64 bits
 	 * 		a. This can be modified/fixed on the implementation side where the input is broken up into
 	 * 			64-bit sized chunks
+	 * 		b. This is fixed with padding from binToString()
 	 * 	2. Key strings are formatted in binary and are exactly 64 bits
 	 * 		a. The key is printed out so you can save it, but for the demo it randomly generates keys
 	 * 	3. There is a boolean that must be set for either encryption or decryption
