@@ -153,6 +153,8 @@ public class testBench {
 				encOutputString = modes.CNT(inputText, key, true);
 			}
 			double encEndTime = System.currentTimeMillis();
+			
+			//Corruption injection
 			int[] tempBinVals = DES.stringToBin(encOutputString);
 			for(int j = 0; j < tempBinVals.length; j++){
 				//Here there is a 10% chance for corruption
@@ -166,6 +168,7 @@ public class testBench {
 				}
 			}
 			encOutputString = DES.binToString(tempBinVals);
+			
 			
 			double decStartTime = System.currentTimeMillis();
 			//Decryption
