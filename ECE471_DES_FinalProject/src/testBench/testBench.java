@@ -1,4 +1,5 @@
 package testBench;
+import java.awt.List;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -36,23 +37,67 @@ public class testBench {
 		 */	
 		 for(int fileNum = 1; fileNum < 31; fileNum++){
 			String filePath = "testFiles/test_" + fileNum +".txt";
-			if(fileNum < 9){
+			if(fileNum < 10){
 				filePath = "testFiles/test_0" + (fileNum+1) + ".txt";
 			}
 			
 			String inputText = getFile(filePath);
+
 			if(fileNum < 11){
-				System.out.print("Small ");
+				System.out.println("Speed/IC test run: " + (fileNum - 0));
+				System.out.print("	[1.1/2.1] Small ");
 			}
 			else if(fileNum < 21){
-				System.out.print("Medium ");
+				System.out.println("Speed/IC test run: " + (fileNum - 10));
+				System.out.print("	[1.2/2.2] Medium ");
 			}
 			else if(fileNum < 31){
-				System.out.print("Large ");
+				System.out.println("Speed/IC test run: " + (fileNum - 20));
+				System.out.print("	[1.3/2.3] Large ");
 			}
 			System.out.println("file test:");
 			testBench.time_IC_Test(inputText, key);
-		}
+		 }
+		 
+		 for(int fileNum = 31; fileNum < 41; fileNum++){
+				String filePath = "testFiles/test_" + fileNum +".txt";
+				String inputText = getFile(filePath);
+				for(int j = 0; j < 3; j++){
+					if(j == 0){
+						System.out.println("Repeating chunks test run: " + (fileNum - 30));
+						System.out.println("	[3.1] Corruption file test:");
+						testBench.corruption_Test(inputText, key);
+					}
+					else if(j == 1){
+						System.out.println("	[4.1.1] Scramble file test:");
+						testBench.scramble_Test(inputText, key);
+					}
+					else if(j == 2){
+						System.out.println("	[4.2.1] Targeted Swap file test:");
+					}
+					
+				}
+		 }
+		 
+		 for(int fileNum = 11; fileNum < 21; fileNum++){
+				String filePath = "testFiles/test_" + fileNum +".txt";
+				String inputText = getFile(filePath);
+				for(int j = 0; j < 3; j++){
+					if(j == 0){
+						System.out.println("Fully Random test run: " + (fileNum - 10));
+						System.out.println("	[3.2] Corruption file test:");
+						testBench.corruption_Test(inputText, key);
+					}
+					else if(j == 1){
+						System.out.println("	[4.1.2] Scramble file test:");
+						testBench.scramble_Test(inputText, key);
+					}
+					else if(j == 2){
+						System.out.println("	[4.2.2] Targeted Swap file test:");
+					}
+					
+				}
+		 }
 		
 	}
 	
@@ -109,26 +154,26 @@ public class testBench {
 	public static void time_IC_testFooter(double encTime, double decTime, double totalTime, String inputText, 
 			String encOutputString, String decOutputString, int testNum){
 		if(testNum == 0){
-			System.out.println("	ECB:");
+			System.out.println("		ECB:");
 		}
 		else if(testNum == 1){
-			System.out.println("	CBC:");
+			System.out.println("		CBC:");
 		}
 		else if(testNum == 2){
-			System.out.println("	CFB:");
+			System.out.println("		CFB:");
 		}
 		else if(testNum == 3){
-			System.out.println("	OFB:");
+			System.out.println("		OFB:");
 		}
 		else if(testNum == 4){
-			System.out.println("	CNT:");
+			System.out.println("		CNT:");
 		}
-		System.out.println("		Original Index of Coincidence: " + getIC(getLetterFreq(inputText), inputText));
-		System.out.println("		Encryption time: " + encTime + " ms");
-		System.out.println("		Encryption Index of Coincidence: " + getIC(getLetterFreq(encOutputString), encOutputString));
-		System.out.println("		Decryption time: " + decTime + " ms");
-		System.out.println("		Decryption Index of Coincidence: " + getIC(getLetterFreq(decOutputString), decOutputString));
-		System.out.println("		Total time: " + totalTime + " ms");
+		System.out.println("			Encryption Index of Coincidence	: " + getIC(getLetterFreq(encOutputString), encOutputString) + 
+				"	|	Encryption time: " + encTime + " ms");
+		System.out.println("			Decryption Index of Coincidence	: " + getIC(getLetterFreq(decOutputString), decOutputString) + 
+				"	|	Decryption time: " + decTime + " ms");
+		System.out.println("			Original Index of Coincidence	: " + getIC(getLetterFreq(inputText), inputText) + 
+				"	|	Total time: " + totalTime + " ms");
 	}
 	
 	public static void corruption_Test(String inputText, int[] key){
@@ -169,6 +214,73 @@ public class testBench {
 			}
 			encOutputString = DES.binToString(tempBinVals);
 			
+			
+			double decStartTime = System.currentTimeMillis();
+			//Decryption
+			String decOutputString = "";
+			if(i == 0){
+				decOutputString = modes.ECB(encOutputString, key, false);
+			}
+			else if(i == 1){
+				decOutputString = modes.CBC(encOutputString, key, false);
+			}
+			else if(i == 2){
+				decOutputString = modes.CFB(encOutputString, key, false);
+			}
+			else if(i == 3){
+				decOutputString = modes.OFB(encOutputString, key, false);
+			}
+			else if(i == 4){
+				decOutputString = modes.CNT(encOutputString, key, false);
+			}
+			double decEndTime = System.currentTimeMillis();
+			
+			double encTime = encEndTime - encStartTime;
+			double decTime = decEndTime - decStartTime;
+			double totalTime = decEndTime - encStartTime;
+			testBench.time_IC_testFooter(encTime, decTime, totalTime, inputText, encOutputString, decOutputString, i);
+		}
+	}
+
+	public static void scramble_Test(String inputText, int[] key){
+		for(int i = 0; i < 5; i++){
+			//Start enc timer
+			double encStartTime = System.currentTimeMillis();
+			//Encryption
+			String encOutputString = "";
+			if(i == 0){
+				encOutputString = modes.ECB(inputText, key, true);
+			}
+			else if(i == 1){
+				encOutputString = modes.CBC(inputText, key, true);
+			}
+			else if(i == 2){
+				encOutputString = modes.CFB(inputText, key, true);
+			}
+			else if(i == 3){
+				encOutputString = modes.OFB(inputText, key, true);
+			}
+			else if(i == 4){
+				encOutputString = modes.CNT(inputText, key, true);
+			}
+			double encEndTime = System.currentTimeMillis();
+			
+			//Scramble em
+			String temp = encOutputString;
+			ArrayList<String> stringList = new ArrayList<String>();
+			for(int j = 0; j < temp.length()/8; j++){
+				stringList.add(temp.substring(j, j+8));				
+			}
+			int origSize = stringList.size();
+			temp = "";
+			for(int j = 0; j < origSize; j++){
+				if(stringList.isEmpty() == false){
+					int idx = (int)(Math.random() * stringList.size());
+					temp = temp + stringList.get(idx);
+					stringList.remove(idx);
+				}
+			}
+			encOutputString = temp;
 			
 			double decStartTime = System.currentTimeMillis();
 			//Decryption

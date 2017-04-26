@@ -6,34 +6,10 @@ import java.io.PrintWriter;
 public class testFileCreator {
 
 	public static void main(String[] args) {
-		for(int i = 0; i < 10; i++){
-			String test = smallFile();
-			try{
-				String fileExt = "testFiles/test_0" + (i+1) + ".txt";
-				if(i == 9){
-					fileExt = "testFiles/test_" + (i+1) + ".txt";
-				}		
-				PrintWriter writer = new PrintWriter(fileExt, "UTF-8");
-				writer.print(test);
-			    writer.close();
-			} catch (IOException e) {
-			   // do something
-			}
-		}
-		for(int i = 0; i < 10; i++){
-			String test = medFile();
-			try{
-			    PrintWriter writer = new PrintWriter("testFiles/test_" + (i+11) + ".txt", "UTF-8");
-			    writer.print(test);
-			    writer.close();
-			} catch (IOException e) {
-			   // do something
-			}
-		}
-		for(int i = 0; i < 10; i++){
+		for(int i = 31; i < 41; i++){
 			String test = largeFile();
 			try{
-			    PrintWriter writer = new PrintWriter("testFiles/test_" + (i+21) + ".txt", "UTF-8");
+			    PrintWriter writer = new PrintWriter("testFiles/test_" + (i) + ".txt", "UTF-8");
 			    writer.print(test);
 			    writer.close();
 			} catch (IOException e) {
