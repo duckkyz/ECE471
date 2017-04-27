@@ -11,7 +11,10 @@ public class modes {
 		StringBuilder outputString = new StringBuilder();
 		
 		for(int x = 0; x < inputString.length(); x = x+8){
-			desInputString = inputString.substring(x, x+7);
+			
+			//check if less than 8
+			
+			desInputString = inputString.substring(x, x+8);
 			outputString.append(DES.DESLoop(desInputString, key, isEncrypting));
 		}
 		
@@ -29,7 +32,7 @@ public class modes {
 			
 			runningIV = IV;
 			for(int x = 0; x < inputString.length(); x = x+8){
-				binaryInput = DES.stringToBin(inputString.substring(x, x+7));						//converts 8 chars to binary
+				binaryInput = DES.stringToBin(inputString.substring(x, x+8));						//converts 8 chars to binary
 				binaryInput = XOR(runningIV, binaryInput);											//XORs binaryInput with current IV equivalent
 				desInputString = DES.binToString(binaryInput);										//converts to string
 				desOutputString = DES.DESLoop(desInputString, key, isEncrypting);					//DES
@@ -40,10 +43,10 @@ public class modes {
 		else if(isEncrypting == false){
 			int [] binaryOutput = new int[64];
 			
-			runningIV = DES.stringToBin(inputString.substring(0, 7));
+			runningIV = DES.stringToBin(inputString.substring(0, 8));
 			for(int x = 0; x < inputString.length(); x = x+8){
-				runningIV = DES.stringToBin(inputString.substring(x, x+7));							//gets the value used to XOR in next block
-				desOutputString = DES.DESLoop(inputString.substring(x, x+7), key, isEncrypting);	//DES
+				runningIV = DES.stringToBin(inputString.substring(x, x+8));							//gets the value used to XOR in next block
+				desOutputString = DES.DESLoop(inputString.substring(x, x+8), key, isEncrypting);	//DES
 				binaryOutput = DES.stringToBin(desOutputString);									//DESresult to binary
 				
 				if(x == 0)
