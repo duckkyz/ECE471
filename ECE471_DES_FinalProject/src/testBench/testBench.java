@@ -170,10 +170,16 @@ public class testBench {
 		}
 		System.out.println("			Encryption Index of Coincidence	: " + getIC(getLetterFreq(encOutputString), encOutputString) + 
 				"	|	Encryption time: " + encTime + " ms");
-		System.out.println("			Decryption Index of Coincidence	: " + getIC(getLetterFreq(decOutputString), decOutputString) + 
+		double decIC = getIC(getLetterFreq(decOutputString), decOutputString);
+		System.out.println("			Decryption Index of Coincidence	: " + decIC + 
 				"	|	Decryption time: " + decTime + " ms");
-		System.out.println("			Original Index of Coincidence	: " + getIC(getLetterFreq(inputText), inputText) + 
+		double origIC = getIC(getLetterFreq(inputText), inputText);
+		System.out.println("			Original Index of Coincidence	: " + origIC + 
 				"	|	Total time: " + totalTime + " ms");
+		if(decIC != origIC){
+			System.out.println(inputText);
+			System.out.println(decOutputString);
+		}
 	}
 	
 	public static void corruption_Test(String inputText, int[] key){
