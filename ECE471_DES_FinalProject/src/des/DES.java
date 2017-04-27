@@ -21,7 +21,7 @@ public class DES {
 		String outputString = "";
 				
 		//Visually print input text
-		for(int i = 0; i < inputText.length/8; i++){
+		/*for(int i = 0; i < inputText.length/8; i++){
 			int temp = (128 * inputText[i*8 + 0])
 						+ (64 * inputText[i*8 + 1])
 						+ (32 * inputText[i*8 + 2])
@@ -39,6 +39,7 @@ public class DES {
 			System.out.print(" "+ inputText[i] + ",");
 		}
 		System.out.println("");
+		*/
 
 		
 		//Initial Permutation
@@ -54,12 +55,13 @@ public class DES {
 		keyMixing.originalKey = key;
 		
 		//Visually print the key
+		/*
 		System.out.println("Key = ");
 		for(int i = 0; i < keyMixing.originalKey.length; i++){
 			System.out.print(" "+ keyMixing.originalKey[i] + ",");
 		}
 		System.out.println("");
-		
+		*/
 		//Get the modified Key ready for DES subkey schedule
 		keyMixing.PC1();
 		
@@ -126,13 +128,13 @@ public class DES {
 			outputText = permutation.initialPermutation(inputText);
 		}
 		
-		
+		/*
 		System.out.println("outputText = ");
 		for(int i = 0; i < outputText.length; i++){
 			System.out.print(" "+ outputText[i] + ",");
 		}
 		System.out.println("");
-		
+		*/
 		outputString = DES.binToString(outputText);
 		
 		return outputString;
@@ -168,6 +170,9 @@ public class DES {
 			int temp = (int) inputString.charAt(i);
 			for(int j = 7; j >= 0; j--){
 				int power = (int)Math.pow(2, j);
+				if(temp/power > 1){
+					System.out.println(inputString.charAt(i));
+				}
 				inputText[(i+1)*8 - (j+1)] = (temp/power);
 				temp = temp - ((temp/power) * power);
 			}

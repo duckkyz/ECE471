@@ -111,16 +111,16 @@ public class testBench {
 				encOutputString = modes.ECB(inputText, key, true);
 			}
 			else if(i == 1){
-				encOutputString = modes.CBC(inputText, key, true);
+				encOutputString = modes.CBC(inputText, key, modes.createIV(), true);
 			}
 			else if(i == 2){
-				encOutputString = modes.CFB(inputText, key, true);
+				encOutputString = modes.CFB(inputText, key, modes.createIV(), true);
 			}
 			else if(i == 3){
-				encOutputString = modes.OFB(inputText, key, true);
+				encOutputString = modes.OFB(inputText, key, modes.createIV(), true);
 			}
 			else if(i == 4){
-				encOutputString = modes.CNT(inputText, key, true);
+				encOutputString = modes.CNT(inputText, key, modes.createIV(), true);
 			}
 			double encEndTime = System.currentTimeMillis();
 			
@@ -131,16 +131,16 @@ public class testBench {
 				decOutputString = modes.ECB(encOutputString, key, false);
 			}
 			else if(i == 1){
-				decOutputString = modes.CBC(encOutputString, key, false);
+				decOutputString = modes.CBC(inputText, key, modes.createIV(), true);
 			}
 			else if(i == 2){
-				decOutputString = modes.CFB(encOutputString, key, false);
+				decOutputString = modes.CFB(inputText, key, modes.createIV(), true);
 			}
 			else if(i == 3){
-				decOutputString = modes.OFB(encOutputString, key, false);
+				decOutputString = modes.OFB(inputText, key, modes.createIV(), true);
 			}
 			else if(i == 4){
-				decOutputString = modes.CNT(encOutputString, key, false);
+				decOutputString = modes.CNT(inputText, key, modes.createIV(), true);
 			}
 			double decEndTime = System.currentTimeMillis();
 			
@@ -186,16 +186,16 @@ public class testBench {
 				encOutputString = modes.ECB(inputText, key, true);
 			}
 			else if(i == 1){
-				encOutputString = modes.CBC(inputText, key, true);
+				encOutputString = modes.CBC(inputText, key, modes.createIV(), true);
 			}
 			else if(i == 2){
-				encOutputString = modes.CFB(inputText, key, true);
+				encOutputString = modes.CFB(inputText, key, modes.createIV(), true);
 			}
 			else if(i == 3){
-				encOutputString = modes.OFB(inputText, key, true);
+				encOutputString = modes.OFB(inputText, key, modes.createIV(), true);
 			}
 			else if(i == 4){
-				encOutputString = modes.CNT(inputText, key, true);
+				encOutputString = modes.CNT(inputText, key, modes.createIV(), true);
 			}
 			double encEndTime = System.currentTimeMillis();
 			
@@ -222,16 +222,16 @@ public class testBench {
 				decOutputString = modes.ECB(encOutputString, key, false);
 			}
 			else if(i == 1){
-				decOutputString = modes.CBC(encOutputString, key, false);
+				decOutputString = modes.CBC(inputText, key, modes.createIV(), true);
 			}
 			else if(i == 2){
-				decOutputString = modes.CFB(encOutputString, key, false);
+				decOutputString = modes.CFB(inputText, key, modes.createIV(), true);
 			}
 			else if(i == 3){
-				decOutputString = modes.OFB(encOutputString, key, false);
+				decOutputString = modes.OFB(inputText, key, modes.createIV(), true);
 			}
 			else if(i == 4){
-				decOutputString = modes.CNT(encOutputString, key, false);
+				decOutputString = modes.CNT(inputText, key, modes.createIV(), true);
 			}
 			double decEndTime = System.currentTimeMillis();
 			
@@ -252,16 +252,16 @@ public class testBench {
 				encOutputString = modes.ECB(inputText, key, true);
 			}
 			else if(i == 1){
-				encOutputString = modes.CBC(inputText, key, true);
+				encOutputString = modes.CBC(inputText, key, modes.createIV(), true);
 			}
 			else if(i == 2){
-				encOutputString = modes.CFB(inputText, key, true);
+				encOutputString = modes.CFB(inputText, key, modes.createIV(), true);
 			}
 			else if(i == 3){
-				encOutputString = modes.OFB(inputText, key, true);
+				encOutputString = modes.OFB(inputText, key, modes.createIV(), true);
 			}
 			else if(i == 4){
-				encOutputString = modes.CNT(inputText, key, true);
+				encOutputString = modes.CNT(inputText, key, modes.createIV(), true);
 			}
 			double encEndTime = System.currentTimeMillis();
 			
@@ -289,16 +289,16 @@ public class testBench {
 				decOutputString = modes.ECB(encOutputString, key, false);
 			}
 			else if(i == 1){
-				decOutputString = modes.CBC(encOutputString, key, false);
+				decOutputString = modes.CBC(inputText, key, modes.createIV(), true);
 			}
 			else if(i == 2){
-				decOutputString = modes.CFB(encOutputString, key, false);
+				decOutputString = modes.CFB(inputText, key, modes.createIV(), true);
 			}
 			else if(i == 3){
-				decOutputString = modes.OFB(encOutputString, key, false);
+				decOutputString = modes.OFB(inputText, key, modes.createIV(), true);
 			}
 			else if(i == 4){
-				decOutputString = modes.CNT(encOutputString, key, false);
+				decOutputString = modes.CNT(inputText, key, modes.createIV(), true);
 			}
 			double decEndTime = System.currentTimeMillis();
 			
