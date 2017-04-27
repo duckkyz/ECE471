@@ -38,7 +38,7 @@ public class testBench {
 		 for(int fileNum = 1; fileNum < 31; fileNum++){
 			String filePath = "testFiles/test_" + fileNum +".txt";
 			if(fileNum < 10){
-				filePath = "testFiles/test_0" + (fileNum+1) + ".txt";
+				filePath = "testFiles/test_0" + (fileNum) + ".txt";
 			}
 			
 			String inputText = getFile(filePath);
