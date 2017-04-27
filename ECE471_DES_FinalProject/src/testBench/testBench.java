@@ -176,7 +176,7 @@ public class testBench {
 		double origIC = getIC(getLetterFreq(inputText), inputText);
 		System.out.println("			Original Index of Coincidence	: " + origIC + 
 				"	|	Total time: " + totalTime + " ms");
-		if(decIC != origIC){
+		if(decIC != origIC && !Double.isNaN(decIC)){
 			System.out.println(inputText);
 			System.out.println(decOutputString);
 		}
