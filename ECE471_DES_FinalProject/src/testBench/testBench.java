@@ -176,9 +176,13 @@ public class testBench {
 		double origIC = getIC(getLetterFreq(inputText), inputText);
 		System.out.println("			Original Index of Coincidence	: " + origIC + 
 				"	|	Total time: " + totalTime + " ms");
-		if(decIC != origIC && !Double.isNaN(decIC)){
-			System.out.println(inputText);
-			System.out.println(decOutputString);
+		if (Double.isNaN(decIC)){
+			//System.out.println("			ERROR: DecIC == NAN, Decoding is not working");
+		}
+		else if(decIC != origIC){
+			System.out.println("			ERROR: DecIC != OrigIC, Decoding may not be working");
+			//System.out.println(inputText);
+			//System.out.println(decOutputString);
 		}
 	}
 	

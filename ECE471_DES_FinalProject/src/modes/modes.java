@@ -8,6 +8,13 @@ public class modes {
 		
 	public static String ECB(String inputString, int[] key, boolean isEncrypting){
 		String desInputString = "";
+		if(inputString.length()%8 != 0){
+			//System.out.println("Going to append " + (8-inputString.length()%8) + " nulls");
+			int itters = (8-inputString.length()%8);
+			for(int i = 0; i < itters; i++){
+				inputString = inputString + Character.toString((char)0);
+			}
+		}
 		StringBuilder outputString = new StringBuilder();
 		
 		for(int x = 0; x < inputString.length(); x = x+8){
@@ -23,6 +30,13 @@ public class modes {
 
 	public static String CBC(String inputString, int[] key, int[] IV, boolean isEncrypting){
 		int[] runningIV = new int[64];
+		if(inputString.length()%8 != 0){
+			//System.out.println("Going to append " + (8-inputString.length()%8) + " nulls");
+			int itters = (8-inputString.length()%8);
+			for(int i = 0; i < itters; i++){
+				inputString = inputString + Character.toString((char)0);
+			}
+		}
 		String desOutputString = "";
 		StringBuilder outputString = new StringBuilder();
 		

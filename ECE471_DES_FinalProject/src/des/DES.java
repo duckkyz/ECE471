@@ -171,9 +171,12 @@ public class DES {
 			for(int j = 7; j >= 0; j--){
 				int power = (int)Math.pow(2, j);
 				if(temp/power > 1){
-					System.out.println(inputString.charAt(i));
+					//System.out.println(inputString.charAt(i));
+					inputText[(i+1)*8 - (j+1)] = 1;
 				}
-				inputText[(i+1)*8 - (j+1)] = (temp/power);
+				else{
+					inputText[(i+1)*8 - (j+1)] = (temp/power);
+				}
 				temp = temp - ((temp/power) * power);
 			}
 		}
