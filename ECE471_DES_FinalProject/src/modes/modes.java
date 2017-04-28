@@ -29,7 +29,7 @@ public class modes {
 	}
 
 	public static String CBC(String inputString, int[] key, int[] IV, boolean isEncrypting){
-		int[] runningIV = new int[64];
+		
 		if(inputString.length()%8 != 0){
 			//System.out.println("Going to append " + (8-inputString.length()%8) + " nulls");
 			int itters = (8-inputString.length()%8);
@@ -37,6 +37,7 @@ public class modes {
 				inputString = inputString + Character.toString((char)0);
 			}
 		}
+		int[] runningIV = new int[64];
 		String desOutputString = "";
 		StringBuilder outputString = new StringBuilder();
 		
@@ -57,9 +58,7 @@ public class modes {
 		else if(isEncrypting == false){
 			int [] binaryOutput = new int[64];
 			
-			runningIV = DES.stringToBin(inputString.substring(0, 8));
 			for(int x = 0; x < inputString.length(); x = x+8){
-				runningIV = DES.stringToBin(inputString.substring(x, x+8));							//gets the value used to XOR in next block
 				desOutputString = DES.DESLoop(inputString.substring(x, x+8), key, isEncrypting);	//DES
 				binaryOutput = DES.stringToBin(desOutputString);									//DESresult to binary
 				
@@ -68,6 +67,7 @@ public class modes {
 				else
 					binaryOutput = XOR(runningIV, binaryOutput);									//XOR runningIV and DESreult
 				
+				runningIV = DES.stringToBin(inputString.substring(x, x+8));							//gets the value used to XOR in next block
 				outputString.append(DES.binToString(binaryOutput));									//add to outputString
 			}
 			
@@ -76,15 +76,54 @@ public class modes {
 	}
 
 	public static String CFB(String inputString, int[] key, int[] IV, boolean isEncrypting){
-		String outputString = "";
+		StringBuilder outputString = new StringBuilder();
+		String desInputString = "";
+		String desOutputString = "";
+		int [] binaryOutput = new int[64];
 		
-		return outputString;
+		if(isEncrypting == true){
+			
+			desInputString = DES.binToString(IV);
+			for(int x = 0; x < inputString.length(); x = x+8){
+				desOutputString = DES.DESLoop(desInputString, key, isEncrypting);
+				binaryOutput = DES.stringToBin(desOutputString);
+				binaryOutput = XOR(binaryOutput, DES.stringToBin(inputString.substring(x, x+8)));
+				desInputString = DES.binToString(binaryOutput);
+				outputString.append(desInputString);
+			}
+		}
+		
+		else if(isEncrypting == false){
+			
+			desInputString = DES.binToString(IV);
+			for(int x = 0; x < inputString.length(); x = x+8){
+				desOutputString = DES.DESLoop(desInputString, key, isEncrypting);
+				binaryOutput = DES.stringToBin(desOutputString);
+				binaryOutput = XOR(binaryOutput, DES.stringToBin(inputString.substring(x, x+8)));
+				desInputString = inputString.substring(x, x+8);
+				outputString.append(DES.binToString(binaryOutput));
+			}
+		}
+		
+		return outputString.toString();
 	}
 
 	public static String OFB(String inputString, int[] key, int[] IV, boolean isEncrypting){
-		String outputString = "";
+		StringBuilder outputString = new StringBuilder();
+		String desInputString = "";
+		String desOutputString = "";
+		int [] binaryOutput = new int[64];
 		
-		return outputString;
+		desInputString = DES.binToString(IV);
+		for(int x = 0; x < inputString.length(); x = x+8){
+			desOutputString = DES.DESLoop(desInputString, key, isEncrypting);
+			binaryOutput = DES.stringToBin(desOutputString);
+			binaryOutput = XOR(binaryOutput, DES.stringToBin(inputString.substring(x, x+8)));
+			desInputString = desOutputString;
+			outputString.append(desInputString);
+		}
+		
+		return outputString.toString();
 	}
 
 	public static String CNT(String inputString, int[] key, int[] IV, boolean isEncrypting){
