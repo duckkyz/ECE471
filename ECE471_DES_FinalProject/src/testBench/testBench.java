@@ -60,45 +60,45 @@ public class testBench {
 		 }
 		 
 		 for(int fileNum = 31; fileNum < 41; fileNum++){
-				String filePath = "testFiles/test_" + fileNum +".txt";
-				String inputText = getFile(filePath);
-				for(int j = 0; j < 3; j++){
-					if(j == 0){
-						System.out.println("Repeating chunks test run: " + (fileNum - 30));
-						System.out.println("	[3.1] Corruption file test:");
-						testBench.corruption_Test(inputText, key);
-					}
-					else if(j == 1){
-						System.out.println("	[4.1.1] Scramble file test:");
-						testBench.scramble_Test(inputText, key);
-					}
-					else if(j == 2){
-						System.out.println("	[4.2.1] Targeted Swap file test:");
-					}
-					
+			String filePath = "testFiles/test_" + fileNum +".txt";
+			String inputText = getFile(filePath);
+			for(int j = 0; j < 3; j++){
+				if(j == 0){
+					System.out.println("Repeating chunks test run: " + (fileNum - 30));
+					System.out.println("	[3.1] Corruption file test:");
+					testBench.corruption_Test(inputText, key);
 				}
+				else if(j == 1){
+					System.out.println("	[4.1.1] Scramble file test:");
+					testBench.scramble_Test(inputText, key);
+				}
+				else if(j == 2){
+					System.out.println("	[4.2.1] Targeted Swap file test:");
+					testBench.target_swap_Test(inputText, key);
+				}
+				
+			}
 		 }
 		 
 		 for(int fileNum = 11; fileNum < 21; fileNum++){
-				String filePath = "testFiles/test_" + fileNum +".txt";
-				String inputText = getFile(filePath);
-				for(int j = 0; j < 3; j++){
-					if(j == 0){
-						System.out.println("Fully Random test run: " + (fileNum - 10));
-						System.out.println("	[3.2] Corruption file test:");
-						testBench.corruption_Test(inputText, key);
-					}
-					else if(j == 1){
-						System.out.println("	[4.1.2] Scramble file test:");
-						testBench.scramble_Test(inputText, key);
-					}
-					else if(j == 2){
-						System.out.println("	[4.2.2] Targeted Swap file test:");
-					}
-					
+			String filePath = "testFiles/test_" + fileNum +".txt";
+			String inputText = getFile(filePath);
+			for(int j = 0; j < 3; j++){
+				if(j == 0){
+					System.out.println("Fully Random test run: " + (fileNum - 10));
+					System.out.println("	[3.2] Corruption file test:");
+					testBench.corruption_Test(inputText, key);
 				}
-		 }
-		
+				else if(j == 1){
+					System.out.println("	[4.1.2] Scramble file test:");
+					testBench.scramble_Test(inputText, key);
+				}
+				else if(j == 2){
+					System.out.println("	[4.2.2] Targeted Swap file test:");
+					testBench.target_swap_Test(inputText, key);
+				}
+			}
+		 }		
 	}
 	
 	public static void time_IC_Test(String inputText, int[] key){
@@ -323,6 +323,76 @@ public class testBench {
 		}
 	}
 
+	public static void target_swap_Test(String inputText, int[] key){
+		for(int i = 0; i < 5; i++){
+			int[] IV = modes.createIV();
+			//Start enc timer
+			long encStartTime = System.nanoTime();
+			//Encryption
+			String encOutputString = "";
+			if(i == 0){
+				encOutputString = modes.ECB(inputText, key, true);
+			}
+			else if(i == 1){
+				encOutputString = modes.CBC(inputText, key, IV, true);
+			}
+			else if(i == 2){
+				encOutputString = modes.CFB(inputText, key, IV, true);
+			}
+			else if(i == 3){
+				encOutputString = modes.OFB(inputText, key, IV, true);
+			}
+			else if(i == 4){
+				encOutputString = modes.CRT(inputText, key, IV, true);
+			}
+			long encEndTime = System.nanoTime();
+						
+			//Swap every 3rd: ex: 1, 2, 3, 4, 5, 6 -> 3, 2, 1, 6, 5, 4
+			String temp = encOutputString;
+			ArrayList<String> stringList = new ArrayList<String>();
+			for(int j = 0; j < temp.length()/8; j++){
+				stringList.add(temp.substring(j, j+8));				
+			}
+			int origSize = stringList.size();
+			temp = "";
+			for(int j = 0; j < origSize - 3; j = j+3){
+				if(stringList.isEmpty() == false){
+					if((stringList.size() - 1) < (j+2)){
+						int idx = j;
+						temp = temp + stringList.get(idx + 2);
+						temp = temp + stringList.get(idx + 1);
+						temp = temp + stringList.get(idx + 0);
+					}
+				}
+			}
+			encOutputString = temp;
+			
+			long decStartTime = System.nanoTime();
+			//Decryption
+			String decOutputString = "";
+			if(i == 0){
+				decOutputString = modes.ECB(encOutputString, key, false);
+			}
+			else if(i == 1){
+				decOutputString = modes.CBC(encOutputString, key, IV, false);
+			}
+			else if(i == 2){
+				decOutputString = modes.CFB(encOutputString, key, IV, false);
+			}
+			else if(i == 3){
+				decOutputString = modes.OFB(encOutputString, key, IV, false);
+			}
+			else if(i == 4){
+				decOutputString = modes.CRT(encOutputString, key, IV, false);
+			}			
+			long decEndTime = System.nanoTime();
+			
+			long encTime = encEndTime - encStartTime;
+			long decTime = decEndTime - decStartTime;
+			long totalTime = decEndTime - encStartTime;
+			testBench.time_IC_testFooter(encTime, decTime, totalTime, inputText, encOutputString, decOutputString, i);
+		}
+	}
 	
 	public static String getFile(String filePath){
 		String inputText = "";
