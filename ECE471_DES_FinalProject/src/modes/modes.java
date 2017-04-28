@@ -76,6 +76,13 @@ public class modes {
 	}
 
 	public static String CFB(String inputString, int[] key, int[] IV, boolean isEncrypting){
+		if(inputString.length()%8 != 0){
+			//System.out.println("Going to append " + (8-inputString.length()%8) + " nulls");
+			int itters = (8-inputString.length()%8);
+			for(int i = 0; i < itters; i++){
+				inputString = inputString + Character.toString((char)0);
+			}
+		}
 		StringBuilder outputString = new StringBuilder();
 		String desInputString = "";
 		String desOutputString = "";
@@ -109,6 +116,13 @@ public class modes {
 	}
 
 	public static String OFB(String inputString, int[] key, int[] IV, boolean isEncrypting){
+		if(inputString.length()%8 != 0){
+			//System.out.println("Going to append " + (8-inputString.length()%8) + " nulls");
+			int itters = (8-inputString.length()%8);
+			for(int i = 0; i < itters; i++){
+				inputString = inputString + Character.toString((char)0);
+			}
+		}
 		StringBuilder outputString = new StringBuilder();
 		String desInputString = "";
 		String desOutputString = "";
@@ -127,6 +141,13 @@ public class modes {
 	}
 
 	public static String CNT(String inputString, int[] key, int[] IV, boolean isEncrypting){
+		if(inputString.length()%8 != 0){
+			//System.out.println("Going to append " + (8-inputString.length()%8) + " nulls");
+			int itters = (8-inputString.length()%8);
+			for(int i = 0; i < itters; i++){
+				inputString = inputString + Character.toString((char)0);
+			}
+		}
 		String outputString = "";
 		
 		return outputString;
