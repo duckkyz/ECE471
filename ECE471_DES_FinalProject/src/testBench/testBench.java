@@ -132,16 +132,16 @@ public class testBench {
 				decOutputString = modes.ECB(encOutputString, key, false);
 			}
 			else if(i == 1){
-				decOutputString = modes.CBC(inputText, key, IV, false);
+				decOutputString = modes.CBC(encOutputString, key, IV, false);
 			}
 			else if(i == 2){
-				decOutputString = modes.CFB(inputText, key, IV, false);
+				decOutputString = modes.CFB(encOutputString, key, IV, false);
 			}
 			else if(i == 3){
-				decOutputString = modes.OFB(inputText, key, IV, false);
+				decOutputString = modes.OFB(encOutputString, key, IV, false);
 			}
 			else if(i == 4){
-				decOutputString = modes.CRT(inputText, key, IV, false);
+				decOutputString = modes.CRT(encOutputString, key, IV, false);
 			}
 			long decEndTime = System.nanoTime();
 			
@@ -235,16 +235,16 @@ public class testBench {
 				decOutputString = modes.ECB(encOutputString, key, false);
 			}
 			else if(i == 1){
-				decOutputString = modes.CBC(inputText, key, IV, false);
+				decOutputString = modes.CBC(encOutputString, key, IV, false);
 			}
 			else if(i == 2){
-				decOutputString = modes.CFB(inputText, key, IV, false);
+				decOutputString = modes.CFB(encOutputString, key, IV, false);
 			}
 			else if(i == 3){
-				decOutputString = modes.OFB(inputText, key, IV, false);
+				decOutputString = modes.OFB(encOutputString, key, IV, false);
 			}
 			else if(i == 4){
-				decOutputString = modes.CRT(inputText, key, IV, false);
+				decOutputString = modes.CRT(encOutputString, key, IV, false);
 			}
 			long decEndTime = System.nanoTime();
 			
@@ -303,16 +303,16 @@ public class testBench {
 				decOutputString = modes.ECB(encOutputString, key, false);
 			}
 			else if(i == 1){
-				decOutputString = modes.CBC(inputText, key, IV, false);
+				decOutputString = modes.CBC(encOutputString, key, IV, false);
 			}
 			else if(i == 2){
-				decOutputString = modes.CFB(inputText, key, IV, false);
+				decOutputString = modes.CFB(encOutputString, key, IV, false);
 			}
 			else if(i == 3){
-				decOutputString = modes.OFB(inputText, key, IV, false);
+				decOutputString = modes.OFB(encOutputString, key, IV, false);
 			}
 			else if(i == 4){
-				decOutputString = modes.CRT(inputText, key, IV, false);
+				decOutputString = modes.CRT(encOutputString, key, IV, false);
 			}			
 			long decEndTime = System.nanoTime();
 			

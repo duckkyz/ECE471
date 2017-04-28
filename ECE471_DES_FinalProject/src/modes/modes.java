@@ -43,7 +43,8 @@ public class modes {
 			
 			runningIV = IV;
 			for(int x = 0; x < inputString.length(); x = x+8){
-				binaryInput = DES.stringToBin(inputString.substring(x, x+8));						//converts 8 chars to binary
+				String tempStr = inputString.substring(x, x+8);
+				binaryInput = DES.stringToBin(tempStr);												//converts 8 chars to binary
 				binaryInput = XOR(runningIV, binaryInput);											//XORs binaryInput with current IV equivalent
 				desInputString = DES.binToString(binaryInput);										//converts to string
 				desOutputString = DES.DESLoop(desInputString, key, isEncrypting);					//DES
