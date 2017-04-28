@@ -168,12 +168,7 @@ public class modes {
 	public static int[] XOR(int[] input1, int[] input2){
 		int[] result = new int[64];
 		for(int i = 0; i < 64; i++){
-			if(input1[i] == 1 & input2[i] == 0)
-				result[i] = 1;
-			else if(input1[i] == 0 & input2[i] == 1)
-				result[i] = 1;
-			else
-				result[i] = 0;
+			result[i] = input1[i] ^ input2[i];
 		}
 		return result;
 	}

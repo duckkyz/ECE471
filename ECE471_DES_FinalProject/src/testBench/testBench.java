@@ -103,6 +103,7 @@ public class testBench {
 	
 	public static void time_IC_Test(String inputText, int[] key){
 		for(int i = 0; i < 5; i++){
+			int[] IV = modes.createIV();
 			//Start enc timer
 			long encStartTime = System.nanoTime();
 			//Encryption
@@ -111,16 +112,16 @@ public class testBench {
 				encOutputString = modes.ECB(inputText, key, true);
 			}
 			else if(i == 1){
-				encOutputString = modes.CBC(inputText, key, modes.createIV(), true);
+				encOutputString = modes.CBC(inputText, key, IV, true);
 			}
 			else if(i == 2){
-				encOutputString = modes.CFB(inputText, key, modes.createIV(), true);
+				encOutputString = modes.CFB(inputText, key, IV, true);
 			}
 			else if(i == 3){
-				encOutputString = modes.OFB(inputText, key, modes.createIV(), true);
+				encOutputString = modes.OFB(inputText, key, IV, true);
 			}
 			else if(i == 4){
-				encOutputString = modes.CNT(inputText, key, modes.createIV(), true);
+				encOutputString = modes.CNT(inputText, key, IV, true);
 			}
 			long encEndTime = System.nanoTime();
 			
@@ -131,16 +132,16 @@ public class testBench {
 				decOutputString = modes.ECB(encOutputString, key, false);
 			}
 			else if(i == 1){
-				decOutputString = modes.CBC(inputText, key, modes.createIV(), true);
+				decOutputString = modes.CBC(inputText, key, IV, false);
 			}
 			else if(i == 2){
-				decOutputString = modes.CFB(inputText, key, modes.createIV(), true);
+				decOutputString = modes.CFB(inputText, key, IV, false);
 			}
 			else if(i == 3){
-				decOutputString = modes.OFB(inputText, key, modes.createIV(), true);
+				decOutputString = modes.OFB(inputText, key, IV, false);
 			}
 			else if(i == 4){
-				decOutputString = modes.CNT(inputText, key, modes.createIV(), true);
+				decOutputString = modes.CNT(inputText, key, IV, false);
 			}
 			long decEndTime = System.nanoTime();
 			
@@ -189,6 +190,7 @@ public class testBench {
 	
 	public static void corruption_Test(String inputText, int[] key){
 		for(int i = 0; i < 5; i++){
+			int[] IV = modes.createIV();
 			//Start enc timer
 			long encStartTime = System.nanoTime();
 			//Encryption
@@ -197,16 +199,16 @@ public class testBench {
 				encOutputString = modes.ECB(inputText, key, true);
 			}
 			else if(i == 1){
-				encOutputString = modes.CBC(inputText, key, modes.createIV(), true);
+				encOutputString = modes.CBC(inputText, key, IV, true);
 			}
 			else if(i == 2){
-				encOutputString = modes.CFB(inputText, key, modes.createIV(), true);
+				encOutputString = modes.CFB(inputText, key, IV, true);
 			}
 			else if(i == 3){
-				encOutputString = modes.OFB(inputText, key, modes.createIV(), true);
+				encOutputString = modes.OFB(inputText, key, IV, true);
 			}
 			else if(i == 4){
-				encOutputString = modes.CNT(inputText, key, modes.createIV(), true);
+				encOutputString = modes.CNT(inputText, key, IV, true);
 			}
 			long encEndTime = System.nanoTime();
 						
@@ -233,16 +235,16 @@ public class testBench {
 				decOutputString = modes.ECB(encOutputString, key, false);
 			}
 			else if(i == 1){
-				decOutputString = modes.CBC(inputText, key, modes.createIV(), true);
+				decOutputString = modes.CBC(inputText, key, IV, false);
 			}
 			else if(i == 2){
-				decOutputString = modes.CFB(inputText, key, modes.createIV(), true);
+				decOutputString = modes.CFB(inputText, key, IV, false);
 			}
 			else if(i == 3){
-				decOutputString = modes.OFB(inputText, key, modes.createIV(), true);
+				decOutputString = modes.OFB(inputText, key, IV, false);
 			}
 			else if(i == 4){
-				decOutputString = modes.CNT(inputText, key, modes.createIV(), true);
+				decOutputString = modes.CNT(inputText, key, IV, false);
 			}
 			long decEndTime = System.nanoTime();
 			
@@ -255,6 +257,7 @@ public class testBench {
 
 	public static void scramble_Test(String inputText, int[] key){
 		for(int i = 0; i < 5; i++){
+			int[] IV = modes.createIV();
 			//Start enc timer
 			long encStartTime = System.nanoTime();
 			//Encryption
@@ -263,16 +266,16 @@ public class testBench {
 				encOutputString = modes.ECB(inputText, key, true);
 			}
 			else if(i == 1){
-				encOutputString = modes.CBC(inputText, key, modes.createIV(), true);
+				encOutputString = modes.CBC(inputText, key, IV, true);
 			}
 			else if(i == 2){
-				encOutputString = modes.CFB(inputText, key, modes.createIV(), true);
+				encOutputString = modes.CFB(inputText, key, IV, true);
 			}
 			else if(i == 3){
-				encOutputString = modes.OFB(inputText, key, modes.createIV(), true);
+				encOutputString = modes.OFB(inputText, key, IV, true);
 			}
 			else if(i == 4){
-				encOutputString = modes.CNT(inputText, key, modes.createIV(), true);
+				encOutputString = modes.CNT(inputText, key, IV, true);
 			}
 			long encEndTime = System.nanoTime();
 						
@@ -300,16 +303,16 @@ public class testBench {
 				decOutputString = modes.ECB(encOutputString, key, false);
 			}
 			else if(i == 1){
-				decOutputString = modes.CBC(inputText, key, modes.createIV(), true);
+				decOutputString = modes.CBC(inputText, key, IV, false);
 			}
 			else if(i == 2){
-				decOutputString = modes.CFB(inputText, key, modes.createIV(), true);
+				decOutputString = modes.CFB(inputText, key, IV, false);
 			}
 			else if(i == 3){
-				decOutputString = modes.OFB(inputText, key, modes.createIV(), true);
+				decOutputString = modes.OFB(inputText, key, IV, false);
 			}
 			else if(i == 4){
-				decOutputString = modes.CNT(inputText, key, modes.createIV(), true);
+				decOutputString = modes.CNT(inputText, key, IV, false);
 			}			
 			long decEndTime = System.nanoTime();
 			
