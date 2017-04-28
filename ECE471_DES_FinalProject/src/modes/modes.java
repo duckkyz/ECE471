@@ -145,9 +145,34 @@ public class modes {
 				inputString = inputString + Character.toString((char)0);
 			}
 		}
-		String outputString = "";
+		StringBuilder outputString = new StringBuilder();
+		String desInputString = "";
+		String desOutputString = "";
+		int [] binaryOutput = new int[64];
+		int [] binStreamIV = new int[64];
 		
-		return outputString;
+		
+		binStreamIV = IV;
+		for(int x = 0; x < inputString.length(); x = x+8){
+			desInputString = DES.binToString(binStreamIV);
+			desOutputString = DES.DESLoop(desInputString, key, true);
+			binaryOutput = DES.stringToBin(desOutputString);
+			binaryOutput = XOR(binaryOutput, DES.stringToBin(inputString.substring(x, x+8)));
+			
+			for(int y = 0; y < binStreamIV.length; y++){
+				if(binStreamIV[y] == 0){
+					binStreamIV[y] = 1;
+					break;
+				}
+				else{
+					binStreamIV[y] = 0;
+				}
+			}
+			
+			outputString.append(DES.binToString(binaryOutput));
+		}
+		
+		return outputString.toString();
 	}
 	
 	public static int[] createIV(){
