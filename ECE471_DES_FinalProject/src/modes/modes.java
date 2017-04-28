@@ -101,14 +101,14 @@ public class modes {
 			
 			desInputString = DES.binToString(IV);
 			for(int x = 0; x < inputString.length(); x = x+8){
-				desOutputString = DES.DESLoop(desInputString, key, isEncrypting);
+				desOutputString = DES.DESLoop(desInputString, key, true);
 				binaryOutput = DES.stringToBin(desOutputString);
-				binaryOutput = XOR(binaryOutput, DES.stringToBin(inputString.substring(x, x+8)));
 				desInputString = inputString.substring(x, x+8);
-				outputString.append(DES.binToString(binaryOutput));
+				binaryOutput = XOR(binaryOutput, DES.stringToBin(desInputString));
+				String tempStr = DES.binToString(binaryOutput);
+				outputString.append(tempStr);
 			}
 		}
-		
 		return outputString.toString();
 	}
 
@@ -127,11 +127,11 @@ public class modes {
 		
 		desInputString = DES.binToString(IV);
 		for(int x = 0; x < inputString.length(); x = x+8){
-			desOutputString = DES.DESLoop(desInputString, key, isEncrypting);
+			desOutputString = DES.DESLoop(desInputString, key, true);
 			binaryOutput = DES.stringToBin(desOutputString);
 			binaryOutput = XOR(binaryOutput, DES.stringToBin(inputString.substring(x, x+8)));
 			desInputString = desOutputString;
-			outputString.append(desInputString);
+			outputString.append(DES.binToString(binaryOutput));
 		}
 		
 		return outputString.toString();

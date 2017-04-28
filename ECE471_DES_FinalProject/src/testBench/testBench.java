@@ -182,7 +182,7 @@ public class testBench {
 			//System.out.println("			ERROR: DecIC == NAN, Decoding is not working");
 		}
 		else if(decIC != origIC){
-			System.out.println("			ERROR: DecIC != OrigIC, Decoding may not be working");
+			//System.out.println("			ERROR: DecIC != OrigIC, Decoding may not be working");
 			//System.out.println(inputText);
 			//System.out.println(decOutputString);
 		}
