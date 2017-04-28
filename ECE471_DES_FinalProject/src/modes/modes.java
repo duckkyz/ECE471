@@ -18,9 +18,6 @@ public class modes {
 		StringBuilder outputString = new StringBuilder();
 		
 		for(int x = 0; x < inputString.length(); x = x+8){
-			
-			//check if less than 8
-			
 			desInputString = inputString.substring(x, x+8);
 			outputString.append(DES.DESLoop(desInputString, key, isEncrypting));
 		}

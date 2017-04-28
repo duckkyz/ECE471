@@ -104,7 +104,7 @@ public class testBench {
 	public static void time_IC_Test(String inputText, int[] key){
 		for(int i = 0; i < 5; i++){
 			//Start enc timer
-			double encStartTime = System.currentTimeMillis();
+			long encStartTime = System.nanoTime();
 			//Encryption
 			String encOutputString = "";
 			if(i == 0){
@@ -122,9 +122,9 @@ public class testBench {
 			else if(i == 4){
 				encOutputString = modes.CNT(inputText, key, modes.createIV(), true);
 			}
-			double encEndTime = System.currentTimeMillis();
+			long encEndTime = System.nanoTime();
 			
-			double decStartTime = System.currentTimeMillis();
+			long decStartTime = System.nanoTime();
 			//Decryption
 			String decOutputString = "";
 			if(i == 0){
@@ -142,17 +142,18 @@ public class testBench {
 			else if(i == 4){
 				decOutputString = modes.CNT(inputText, key, modes.createIV(), true);
 			}
-			double decEndTime = System.currentTimeMillis();
+			long decEndTime = System.nanoTime();
 			
-			double encTime = encEndTime - encStartTime;
-			double decTime = decEndTime - decStartTime;
-			double totalTime = decEndTime - encStartTime;
+			long encTime = encEndTime - encStartTime;
+			long decTime = decEndTime - decStartTime;
+			long totalTime = decEndTime - encStartTime;
 			testBench.time_IC_testFooter(encTime, decTime, totalTime, inputText, encOutputString, decOutputString, i);
 		}
 	}
 	
-	public static void time_IC_testFooter(double encTime, double decTime, double totalTime, String inputText, 
+	public static void time_IC_testFooter(long encTime, long decTime, long totalTime, String inputText, 
 			String encOutputString, String decOutputString, int testNum){
+		double divider = 1000000;
 		if(testNum == 0){
 			System.out.println("		ECB:");
 		}
@@ -169,13 +170,13 @@ public class testBench {
 			System.out.println("		CNT:");
 		}
 		System.out.println("			Encryption Index of Coincidence	: " + getIC(getLetterFreq(encOutputString), encOutputString) + 
-				"	|	Encryption time: " + encTime + " ms");
+				"	|	Encryption time	: " + (double)encTime/divider + " ms");
 		double decIC = getIC(getLetterFreq(decOutputString), decOutputString);
 		System.out.println("			Decryption Index of Coincidence	: " + decIC + 
-				"	|	Decryption time: " + decTime + " ms");
+				"	|	Decryption time	: " + (double)decTime/divider + " ms");
 		double origIC = getIC(getLetterFreq(inputText), inputText);
 		System.out.println("			Original Index of Coincidence	: " + origIC + 
-				"	|	Total time: " + totalTime + " ms");
+				"	|	Total time	: " + (double)totalTime/divider + " ms");
 		if (Double.isNaN(decIC)){
 			//System.out.println("			ERROR: DecIC == NAN, Decoding is not working");
 		}
@@ -189,7 +190,7 @@ public class testBench {
 	public static void corruption_Test(String inputText, int[] key){
 		for(int i = 0; i < 5; i++){
 			//Start enc timer
-			double encStartTime = System.currentTimeMillis();
+			long encStartTime = System.nanoTime();
 			//Encryption
 			String encOutputString = "";
 			if(i == 0){
@@ -207,8 +208,8 @@ public class testBench {
 			else if(i == 4){
 				encOutputString = modes.CNT(inputText, key, modes.createIV(), true);
 			}
-			double encEndTime = System.currentTimeMillis();
-			
+			long encEndTime = System.nanoTime();
+						
 			//Corruption injection
 			int[] tempBinVals = DES.stringToBin(encOutputString);
 			for(int j = 0; j < tempBinVals.length; j++){
@@ -225,7 +226,7 @@ public class testBench {
 			encOutputString = DES.binToString(tempBinVals);
 			
 			
-			double decStartTime = System.currentTimeMillis();
+			long decStartTime = System.nanoTime();
 			//Decryption
 			String decOutputString = "";
 			if(i == 0){
@@ -243,11 +244,11 @@ public class testBench {
 			else if(i == 4){
 				decOutputString = modes.CNT(inputText, key, modes.createIV(), true);
 			}
-			double decEndTime = System.currentTimeMillis();
+			long decEndTime = System.nanoTime();
 			
-			double encTime = encEndTime - encStartTime;
-			double decTime = decEndTime - decStartTime;
-			double totalTime = decEndTime - encStartTime;
+			long encTime = encEndTime - encStartTime;
+			long decTime = decEndTime - decStartTime;
+			long totalTime = decEndTime - encStartTime;
 			testBench.time_IC_testFooter(encTime, decTime, totalTime, inputText, encOutputString, decOutputString, i);
 		}
 	}
@@ -255,7 +256,7 @@ public class testBench {
 	public static void scramble_Test(String inputText, int[] key){
 		for(int i = 0; i < 5; i++){
 			//Start enc timer
-			double encStartTime = System.currentTimeMillis();
+			long encStartTime = System.nanoTime();
 			//Encryption
 			String encOutputString = "";
 			if(i == 0){
@@ -273,8 +274,8 @@ public class testBench {
 			else if(i == 4){
 				encOutputString = modes.CNT(inputText, key, modes.createIV(), true);
 			}
-			double encEndTime = System.currentTimeMillis();
-			
+			long encEndTime = System.nanoTime();
+						
 			//Scramble em
 			String temp = encOutputString;
 			ArrayList<String> stringList = new ArrayList<String>();
@@ -292,7 +293,7 @@ public class testBench {
 			}
 			encOutputString = temp;
 			
-			double decStartTime = System.currentTimeMillis();
+			long decStartTime = System.nanoTime();
 			//Decryption
 			String decOutputString = "";
 			if(i == 0){
@@ -309,12 +310,12 @@ public class testBench {
 			}
 			else if(i == 4){
 				decOutputString = modes.CNT(inputText, key, modes.createIV(), true);
-			}
-			double decEndTime = System.currentTimeMillis();
+			}			
+			long decEndTime = System.nanoTime();
 			
-			double encTime = encEndTime - encStartTime;
-			double decTime = decEndTime - decStartTime;
-			double totalTime = decEndTime - encStartTime;
+			long encTime = encEndTime - encStartTime;
+			long decTime = decEndTime - decStartTime;
+			long totalTime = decEndTime - encStartTime;
 			testBench.time_IC_testFooter(encTime, decTime, totalTime, inputText, encOutputString, decOutputString, i);
 		}
 	}
