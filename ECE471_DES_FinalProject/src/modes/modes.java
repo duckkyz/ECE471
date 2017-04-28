@@ -26,7 +26,6 @@ public class modes {
 	}
 
 	public static String CBC(String inputString, int[] key, int[] IV, boolean isEncrypting){
-		
 		if(inputString.length()%8 != 0){
 			//System.out.println("Going to append " + (8-inputString.length()%8) + " nulls");
 			int itters = (8-inputString.length()%8);
@@ -137,7 +136,7 @@ public class modes {
 		return outputString.toString();
 	}
 
-	public static String CNT(String inputString, int[] key, int[] IV, boolean isEncrypting){
+	public static String CRT(String inputString, int[] key, int[] IV, boolean isEncrypting){
 		if(inputString.length()%8 != 0){
 			//System.out.println("Going to append " + (8-inputString.length()%8) + " nulls");
 			int itters = (8-inputString.length()%8);

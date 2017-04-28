@@ -121,7 +121,7 @@ public class testBench {
 				encOutputString = modes.OFB(inputText, key, IV, true);
 			}
 			else if(i == 4){
-				encOutputString = modes.CNT(inputText, key, IV, true);
+				encOutputString = modes.CRT(inputText, key, IV, true);
 			}
 			long encEndTime = System.nanoTime();
 			
@@ -141,7 +141,7 @@ public class testBench {
 				decOutputString = modes.OFB(inputText, key, IV, false);
 			}
 			else if(i == 4){
-				decOutputString = modes.CNT(inputText, key, IV, false);
+				decOutputString = modes.CRT(inputText, key, IV, false);
 			}
 			long decEndTime = System.nanoTime();
 			
@@ -168,7 +168,7 @@ public class testBench {
 			System.out.println("		OFB:");
 		}
 		else if(testNum == 4){
-			System.out.println("		CNT:");
+			System.out.println("		CRT:");
 		}
 		System.out.println("			Encryption Index of Coincidence	: " + getIC(getLetterFreq(encOutputString), encOutputString) + 
 				"	|	Encryption time	: " + (double)encTime/divider + " ms");
@@ -208,7 +208,7 @@ public class testBench {
 				encOutputString = modes.OFB(inputText, key, IV, true);
 			}
 			else if(i == 4){
-				encOutputString = modes.CNT(inputText, key, IV, true);
+				encOutputString = modes.CRT(inputText, key, IV, true);
 			}
 			long encEndTime = System.nanoTime();
 						
@@ -244,7 +244,7 @@ public class testBench {
 				decOutputString = modes.OFB(inputText, key, IV, false);
 			}
 			else if(i == 4){
-				decOutputString = modes.CNT(inputText, key, IV, false);
+				decOutputString = modes.CRT(inputText, key, IV, false);
 			}
 			long decEndTime = System.nanoTime();
 			
@@ -275,7 +275,7 @@ public class testBench {
 				encOutputString = modes.OFB(inputText, key, IV, true);
 			}
 			else if(i == 4){
-				encOutputString = modes.CNT(inputText, key, IV, true);
+				encOutputString = modes.CRT(inputText, key, IV, true);
 			}
 			long encEndTime = System.nanoTime();
 						
@@ -312,7 +312,7 @@ public class testBench {
 				decOutputString = modes.OFB(inputText, key, IV, false);
 			}
 			else if(i == 4){
-				decOutputString = modes.CNT(inputText, key, IV, false);
+				decOutputString = modes.CRT(inputText, key, IV, false);
 			}			
 			long decEndTime = System.nanoTime();
 			
