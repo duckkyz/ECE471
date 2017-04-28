@@ -152,7 +152,10 @@ public class modes {
 		int [] binStreamIV = new int[64];
 		
 		
-		binStreamIV = IV;
+		//binStreamIV = IV;
+		for(int i = 0; i < 64; i++){
+			binStreamIV[i] = 0 ^ IV[i];
+		}
 		for(int x = 0; x < inputString.length(); x = x+8){
 			desInputString = DES.binToString(binStreamIV);
 			desOutputString = DES.DESLoop(desInputString, key, true);

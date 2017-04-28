@@ -13,6 +13,12 @@ import modes.*;
 
 public class testBench {
 	public static void main(String[] args) {
+		
+		boolean speedTest = true;
+		boolean corruptionTest = false;
+		boolean scrambleTest = false;
+		boolean targSwapTest = false;
+		
 		//Create random key
 		int[] key = new int[64];
 		for(int i = 0; i < 64; i++){
@@ -35,70 +41,85 @@ public class testBench {
 		 * 	Large file test:
 		 * 		Tests 1.3 and 2.3
 		 */	
-		 for(int fileNum = 1; fileNum < 31; fileNum++){
-			String filePath = "testFiles/test_" + fileNum +".txt";
-			if(fileNum < 10){
-				filePath = "testFiles/test_0" + (fileNum) + ".txt";
+		
+		if(speedTest == true){
+			for(int fileNum = 1; fileNum < 31; fileNum++){
+				String filePath = "testFiles/test_" + fileNum +".txt";
+				if(fileNum < 10){
+					filePath = "testFiles/test_0" + (fileNum) + ".txt";
+				}
+				
+				String inputText = getFile(filePath);
+				
+				if(fileNum < 11){
+					System.out.println("Speed/IC test run: " + (fileNum - 0));
+					System.out.print("	[1.1/2.1] Small ");
+				}
+				else if(fileNum < 21){
+					System.out.println("Speed/IC test run: " + (fileNum - 10));
+					System.out.print("	[1.2/2.2] Medium ");
+				}
+				else if(fileNum < 31){
+					System.out.println("Speed/IC test run: " + (fileNum - 20));
+					System.out.print("	[1.3/2.3] Large ");
+				}
+				System.out.println("file test:");
+				testBench.time_IC_Test(inputText, key);
 			}
-			
-			String inputText = getFile(filePath);
-
-			if(fileNum < 11){
-				System.out.println("Speed/IC test run: " + (fileNum - 0));
-				System.out.print("	[1.1/2.1] Small ");
-			}
-			else if(fileNum < 21){
-				System.out.println("Speed/IC test run: " + (fileNum - 10));
-				System.out.print("	[1.2/2.2] Medium ");
-			}
-			else if(fileNum < 31){
-				System.out.println("Speed/IC test run: " + (fileNum - 20));
-				System.out.print("	[1.3/2.3] Large ");
-			}
-			System.out.println("file test:");
-			testBench.time_IC_Test(inputText, key);
-		 }
+		}
 		 
-		 for(int fileNum = 31; fileNum < 41; fileNum++){
+		for(int fileNum = 31; fileNum < 41; fileNum++){
 			String filePath = "testFiles/test_" + fileNum +".txt";
 			String inputText = getFile(filePath);
 			for(int j = 0; j < 3; j++){
 				if(j == 0){
 					System.out.println("Repeating chunks test run: " + (fileNum - 30));
-					System.out.println("	[3.1] Corruption file test:");
-					testBench.corruption_Test(inputText, key);
+					if(corruptionTest == true){
+						System.out.println("	[3.1] Corruption file test:");
+						testBench.corruption_Test(inputText, key);
+					}
 				}
 				else if(j == 1){
-					System.out.println("	[4.1.1] Scramble file test:");
-					testBench.scramble_Test(inputText, key);
+					if(scrambleTest == true){
+						System.out.println("	[4.1.1] Scramble file test:");
+						testBench.scramble_Test(inputText, key);
+					}
 				}
 				else if(j == 2){
-					System.out.println("	[4.2.1] Targeted Swap file test:");
-					testBench.target_swap_Test(inputText, key);
+					if(targSwapTest == true){
+						System.out.println("	[4.2.1] Targeted Swap file test:");
+						testBench.target_swap_Test(inputText, key);
+					}
 				}
 				
 			}
-		 }
+		}
 		 
-		 for(int fileNum = 11; fileNum < 21; fileNum++){
+		for(int fileNum = 11; fileNum < 21; fileNum++){
 			String filePath = "testFiles/test_" + fileNum +".txt";
 			String inputText = getFile(filePath);
 			for(int j = 0; j < 3; j++){
 				if(j == 0){
 					System.out.println("Fully Random test run: " + (fileNum - 10));
-					System.out.println("	[3.2] Corruption file test:");
-					testBench.corruption_Test(inputText, key);
+					if(corruptionTest == true){
+						System.out.println("	[3.1] Corruption file test:");
+						testBench.corruption_Test(inputText, key);
+					}
 				}
 				else if(j == 1){
-					System.out.println("	[4.1.2] Scramble file test:");
-					testBench.scramble_Test(inputText, key);
+					if(scrambleTest == true){
+						System.out.println("	[4.1.1] Scramble file test:");
+						testBench.scramble_Test(inputText, key);
+					}
 				}
 				else if(j == 2){
-					System.out.println("	[4.2.2] Targeted Swap file test:");
-					testBench.target_swap_Test(inputText, key);
+					if(targSwapTest == true){
+						System.out.println("	[4.2.1] Targeted Swap file test:");
+						testBench.target_swap_Test(inputText, key);
+					}
 				}
 			}
-		 }		
+		}		
 	}
 	
 	public static void time_IC_Test(String inputText, int[] key){
@@ -213,10 +234,13 @@ public class testBench {
 			long encEndTime = System.nanoTime();
 						
 			//Corruption injection
+			// Randomly corrupt the first block and observe how it propgates
 			int[] tempBinVals = DES.stringToBin(encOutputString);
-			for(int j = 0; j < tempBinVals.length; j++){
+			int corruption_count = 0;
+			for(int j = 0; j < 64; j++){
 				//Here there is a 10% chance for corruption
 				if(Math.random()*100 > 90){
+					corruption_count++;
 					if(tempBinVals[j] == 1){
 						tempBinVals[j] = 0;
 					}
@@ -251,10 +275,57 @@ public class testBench {
 			long encTime = encEndTime - encStartTime;
 			long decTime = decEndTime - decStartTime;
 			long totalTime = decEndTime - encStartTime;
-			testBench.time_IC_testFooter(encTime, decTime, totalTime, inputText, encOutputString, decOutputString, i);
+			testBench.corruption_testFooter(encTime, decTime, totalTime, inputText, encOutputString, decOutputString, i, corruption_count);
 		}
 	}
 
+	public static void corruption_testFooter(long encTime, long decTime, long totalTime, String inputText, 
+			String encOutputString, String decOutputString, int testNum, int corruption_count){
+		double divider = 1000000;
+		if(testNum == 0){
+			System.out.println("		ECB:");
+		}
+		else if(testNum == 1){
+			System.out.println("		CBC:");
+		}
+		else if(testNum == 2){
+			System.out.println("		CFB:");
+		}
+		else if(testNum == 3){
+			System.out.println("		OFB:");
+		}
+		else if(testNum == 4){
+			System.out.println("		CRT:");
+		}
+		
+		int extended_corruption = 0;
+		for(int i = 0; i <inputText.length(); i++){
+			if(inputText.charAt(i) != decOutputString.charAt(i)){
+				++extended_corruption;
+			}
+		}
+		
+		
+		System.out.println("			Encryption Index of Coincidence	: " + getIC(getLetterFreq(encOutputString), encOutputString) + 
+				"	|	Encryption time	: " + (double)encTime/divider + " ms");
+		double decIC = getIC(getLetterFreq(decOutputString), decOutputString);
+		System.out.println("			Decryption Index of Coincidence	: " + decIC + 
+				"	|	Decryption time	: " + (double)decTime/divider + " ms");
+		double origIC = getIC(getLetterFreq(inputText), inputText);
+		System.out.println("			Original Index of Coincidence	: " + origIC + 
+				"	|	Total time	: " + (double)totalTime/divider + " ms");
+		System.out.println("			Corruption propogation : " + Math.ceil(((double)extended_corruption/(double)corruption_count)) + 
+				" corrupted chars per initial corruptions");
+		if (Double.isNaN(decIC)){
+			//System.out.println("			ERROR: DecIC == NAN, Decoding is not working");
+		}
+		else if(decIC != origIC){
+			//System.out.println("			ERROR: DecIC != OrigIC, Decoding may not be working");
+			//System.out.println(inputText);
+			//System.out.println(decOutputString);
+		}
+	}
+	
 	public static void scramble_Test(String inputText, int[] key){
 		for(int i = 0; i < 5; i++){
 			int[] IV = modes.createIV();
