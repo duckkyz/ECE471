@@ -12,13 +12,41 @@ import des.*;
 import modes.*;
 
 public class testBench {
+	
+	public static double[] ECBEncTime = {0,0,0};
+	public static double[] CBCEncTime = {0,0,0};
+	public static double[] CFBEncTime = {0,0,0};
+	public static double[] OFBEncTime = {0,0,0};
+	public static double[] CRTEncTime = {0,0,0};
+	public static double[] ECBDecTime = {0,0,0};
+	public static double[] CBCDecTime = {0,0,0};
+	public static double[] CFBDecTime = {0,0,0};
+	public static double[] OFBDecTime = {0,0,0};
+	public static double[] CRTDecTime = {0,0,0};
+	
+	public static double ECBCorruptCount = 0;
+	public static double CBCCorruptCount = 0;
+	public static double CFBCorruptCount = 0;
+	public static double OFBCorruptCount = 0;
+	public static double CRTCorruptCount = 0;
+	public static double IV_ECBCorruptCount = 0;
+	public static double IV_CBCCorruptCount = 0;
+	public static double IV_CFBCorruptCount = 0;
+	public static double IV_OFBCorruptCount = 0;
+	public static double IV_CRTCorruptCount = 0;
+	
+	public static double ECBScrambleCount = 0;
+	public static double CBCScrambleCount = 0;
+	public static double CFBScrambleCount = 0;
+	public static double OFBScrambleCount = 0;
+	public static double CRTScrambleCount = 0;
+
 	public static void main(String[] args) {
 		
 		boolean speedTest = true;
-		boolean corruptionTest = false;
-		boolean scrambleTest = false;
-		boolean targSwapTest = false;
-		
+		boolean corruptionTest = true;
+		boolean scrambleTest = true;
+
 		//Create random key
 		int[] key = new int[64];
 		for(int i = 0; i < 64; i++){
@@ -50,7 +78,7 @@ public class testBench {
 				}
 				
 				String inputText = getFile(filePath);
-				
+				int size = 0;
 				if(fileNum < 11){
 					System.out.println("Speed/IC test run: " + (fileNum - 0));
 					System.out.print("	[1.1/2.1] Small ");
@@ -58,16 +86,18 @@ public class testBench {
 				else if(fileNum < 21){
 					System.out.println("Speed/IC test run: " + (fileNum - 10));
 					System.out.print("	[1.2/2.2] Medium ");
+					size = 1;
 				}
 				else if(fileNum < 31){
 					System.out.println("Speed/IC test run: " + (fileNum - 20));
 					System.out.print("	[1.3/2.3] Large ");
+					size = 2;
 				}
 				System.out.println("file test:");
-				testBench.time_IC_Test(inputText, key);
+				testBench.time_IC_Test(inputText, key, size);
 			}
 		}
-		 
+			 
 		for(int fileNum = 31; fileNum < 41; fileNum++){
 			String filePath = "testFiles/test_" + fileNum +".txt";
 			String inputText = getFile(filePath);
@@ -75,23 +105,22 @@ public class testBench {
 				if(j == 0){
 					System.out.println("Repeating chunks test run: " + (fileNum - 30));
 					if(corruptionTest == true){
-						System.out.println("	[3.1] Corruption file test:");
-						testBench.corruption_Test(inputText, key);
+						System.out.println("	[3.1.1] Block Corruption file test:");
+						testBench.block_corruption_Test(inputText, key);
 					}
 				}
 				else if(j == 1){
+					if(corruptionTest == true){
+						System.out.println("	[3.2.1] IV Corruption file test:");
+						testBench.IV_corruption_Test(inputText, key);
+					}
+				}
+				else if(j == 2){
 					if(scrambleTest == true){
 						System.out.println("	[4.1.1] Scramble file test:");
 						testBench.scramble_Test(inputText, key);
 					}
-				}
-				else if(j == 2){
-					if(targSwapTest == true){
-						System.out.println("	[4.2.1] Targeted Swap file test:");
-						testBench.target_swap_Test(inputText, key);
-					}
-				}
-				
+				}				
 			}
 		}
 		 
@@ -102,27 +131,74 @@ public class testBench {
 				if(j == 0){
 					System.out.println("Fully Random test run: " + (fileNum - 10));
 					if(corruptionTest == true){
-						System.out.println("	[3.1] Corruption file test:");
-						testBench.corruption_Test(inputText, key);
+						System.out.println("	[3.1.2] Block Corruption file test:");
+						testBench.block_corruption_Test(inputText, key);
 					}
 				}
 				else if(j == 1){
-					if(scrambleTest == true){
-						System.out.println("	[4.1.1] Scramble file test:");
-						testBench.scramble_Test(inputText, key);
+					if(corruptionTest == true){
+						System.out.println("	[3.2.2] IV Corruption file test:");
+						testBench.IV_corruption_Test(inputText, key);
 					}
 				}
 				else if(j == 2){
-					if(targSwapTest == true){
-						System.out.println("	[4.2.1] Targeted Swap file test:");
-						testBench.target_swap_Test(inputText, key);
+					if(scrambleTest == true){
+						System.out.println("	[4.1.2] Scramble file test:");
+						testBench.scramble_Test(inputText, key);
 					}
 				}
 			}
-		}		
+		}	
+		for(int i = 0; i < 3; i++){
+			if(i == 0){
+				System.out.println("Small file: ");
+			}
+			else if(i == 1){
+				System.out.println("Med file: ");
+			}
+			else{
+				System.out.println("Large file: ");
+			}
+			System.out.println("	ECB avg enc time: " + testBench.ECBEncTime[i]/10 + " ms");
+			System.out.println("	ECB avg dec time: " + testBench.ECBDecTime[i]/10 + " ms");
+			System.out.println("	CBC avg enc time: " + testBench.CBCEncTime[i]/10 + " ms");
+			System.out.println("	CBC avg dec time: " + testBench.CBCDecTime[i]/10 + " ms");
+			System.out.println("	CFB avg enc time: " + testBench.CFBEncTime[i]/10 + " ms");
+			System.out.println("	CFB avg dec time: " + testBench.CFBDecTime[i]/10 + " ms");
+			System.out.println("	OFB avg enc time: " + testBench.OFBEncTime[i]/10 + " ms");
+			System.out.println("	OFB avg dec time: " + testBench.OFBDecTime[i]/10 + " ms");
+			System.out.println("	CRT avg enc time: " + testBench.CRTEncTime[i]/10 + " ms");
+			System.out.println("	CRT avg dec time: " + testBench.CRTDecTime[i]/10 + " ms");
+		}
+		for(int i = 0; i < 3; i++){
+			if(i == 0){
+				System.out.println("Block corruption: ");
+				System.out.println("	ECB avg corruption: " + testBench.ECBCorruptCount/10 + " total corrupted bytes per initial corrupted bytes");
+				System.out.println("	CBC avg corruption: " + testBench.CBCCorruptCount/10 + " total corrupted bytes per initial corrupted bytes");
+				System.out.println("	CFB avg corruption: " + testBench.CFBCorruptCount/10 + " total corrupted bytes per initial corrupted bytes");
+				System.out.println("	OFB avg corruption: " + testBench.OFBCorruptCount/10 + " total corrupted bytes per initial corrupted bytes");
+				System.out.println("	CRT avg corruption: " + testBench.CRTCorruptCount/10 + " total corrupted bytes per initial corrupted bytes");
+			}
+			else if(i == 1){
+				System.out.println("IV corruption: ");
+				System.out.println("	ECB avg corruption: " + testBench.IV_ECBCorruptCount/10 + " total corrupted bytes per initial corrupted bytes");
+				System.out.println("	CBC avg corruption: " + testBench.IV_CBCCorruptCount/10 + " total corrupted bytes per initial corrupted bytes");
+				System.out.println("	CFB avg corruption: " + testBench.IV_CFBCorruptCount/10 + " total corrupted bytes per initial corrupted bytes");
+				System.out.println("	OFB avg corruption: " + testBench.IV_OFBCorruptCount/10 + " total corrupted bytes per initial corrupted bytes");
+				System.out.println("	CRT avg corruption: " + testBench.IV_CRTCorruptCount/10 + " total corrupted bytes per initial corrupted bytes");
+			}
+			else{
+				System.out.println("Scramble corruption: ");
+				System.out.println("	ECB avg corruption: " + testBench.ECBScrambleCount/10 + " total corrupted bytes per initial corrupted bytes");
+				System.out.println("	CBC avg corruption: " + testBench.CBCScrambleCount/10 + " total corrupted bytes per initial corrupted bytes");
+				System.out.println("	CFB avg corruption: " + testBench.CFBScrambleCount/10 + " total corrupted bytes per initial corrupted bytes");
+				System.out.println("	OFB avg corruption: " + testBench.OFBScrambleCount/10 + " total corrupted bytes per initial corrupted bytes");
+				System.out.println("	CRT avg corruption: " + testBench.CRTScrambleCount/10 + " total corrupted bytes per initial corrupted bytes");
+			}
+		}
 	}
 	
-	public static void time_IC_Test(String inputText, int[] key){
+	public static void time_IC_Test(String inputText, int[] key, int size){
 		for(int i = 0; i < 5; i++){
 			int[] IV = modes.createIV();
 			//Start enc timer
@@ -169,27 +245,37 @@ public class testBench {
 			long encTime = encEndTime - encStartTime;
 			long decTime = decEndTime - decStartTime;
 			long totalTime = decEndTime - encStartTime;
-			testBench.time_IC_testFooter(encTime, decTime, totalTime, inputText, encOutputString, decOutputString, i);
+			testBench.time_IC_testFooter(encTime, decTime, totalTime, inputText, encOutputString, decOutputString, i, size);
 		}
 	}
 	
 	public static void time_IC_testFooter(long encTime, long decTime, long totalTime, String inputText, 
-			String encOutputString, String decOutputString, int testNum){
+			String encOutputString, String decOutputString, int testNum, int size){
 		double divider = 1000000;
 		if(testNum == 0){
 			System.out.println("		ECB:");
+			testBench.ECBEncTime[size] += (double)encTime/divider;
+			testBench.ECBDecTime[size] += (double)decTime/divider;
 		}
 		else if(testNum == 1){
 			System.out.println("		CBC:");
+			testBench.CBCEncTime[size] += (double)encTime/divider;
+			testBench.CBCDecTime[size] += (double)decTime/divider;
 		}
 		else if(testNum == 2){
 			System.out.println("		CFB:");
+			testBench.CFBEncTime[size] += (double)encTime/divider;
+			testBench.CFBDecTime[size] += (double)decTime/divider;
 		}
 		else if(testNum == 3){
 			System.out.println("		OFB:");
+			testBench.OFBEncTime[size] += (double)encTime/divider;
+			testBench.OFBDecTime[size] += (double)decTime/divider;
 		}
 		else if(testNum == 4){
 			System.out.println("		CRT:");
+			testBench.CRTEncTime[size] += (double)encTime/divider;
+			testBench.CRTDecTime[size] += (double)decTime/divider;
 		}
 		System.out.println("			Encryption Index of Coincidence	: " + getIC(getLetterFreq(encOutputString), encOutputString) + 
 				"	|	Encryption time	: " + (double)encTime/divider + " ms");
@@ -199,6 +285,8 @@ public class testBench {
 		double origIC = getIC(getLetterFreq(inputText), inputText);
 		System.out.println("			Original Index of Coincidence	: " + origIC + 
 				"	|	Total time	: " + (double)totalTime/divider + " ms");
+		
+		
 		if (Double.isNaN(decIC)){
 			//System.out.println("			ERROR: DecIC == NAN, Decoding is not working");
 		}
@@ -209,7 +297,7 @@ public class testBench {
 		}
 	}
 	
-	public static void corruption_Test(String inputText, int[] key){
+	public static void block_corruption_Test(String inputText, int[] key){
 		for(int i = 0; i < 5; i++){
 			int[] IV = modes.createIV();
 			//Start enc timer
@@ -238,8 +326,8 @@ public class testBench {
 			int[] tempBinVals = DES.stringToBin(encOutputString);
 			int corruption_count = 0;
 			for(int j = 0; j < 64; j++){
-				//Here there is a 10% chance for corruption
-				if(Math.random()*100 > 90){
+				//Here there is a 80% chance for corruption
+				if(Math.random()*100 > 80){
 					corruption_count++;
 					if(tempBinVals[j] == 1){
 						tempBinVals[j] = 0;
@@ -275,29 +363,81 @@ public class testBench {
 			long encTime = encEndTime - encStartTime;
 			long decTime = decEndTime - decStartTime;
 			long totalTime = decEndTime - encStartTime;
-			testBench.corruption_testFooter(encTime, decTime, totalTime, inputText, encOutputString, decOutputString, i, corruption_count);
+			testBench.corruption_testFooter(encTime, decTime, totalTime, inputText, encOutputString, decOutputString, i, corruption_count, 0);
+		}
+	}
+	
+	public static void IV_corruption_Test(String inputText, int[] key){
+		for(int i = 0; i < 5; i++){
+			int[] IV = modes.createIV();
+			//Start enc timer
+			long encStartTime = System.nanoTime();
+			//Encryption
+			String encOutputString = "";
+			if(i == 0){
+				encOutputString = modes.ECB(inputText, key, true);
+			}
+			else if(i == 1){
+				encOutputString = modes.CBC(inputText, key, IV, true);
+			}
+			else if(i == 2){
+				encOutputString = modes.CFB(inputText, key, IV, true);
+			}
+			else if(i == 3){
+				encOutputString = modes.OFB(inputText, key, IV, true);
+			}
+			else if(i == 4){
+				encOutputString = modes.CRT(inputText, key, IV, true);
+			}
+			long encEndTime = System.nanoTime();
+						
+			//Corruption injection
+			// Randomly corrupt the IV and see what happens!
+			int corruption_count = 0;
+			for(int j = 0; j < 64; j++){
+				//Here there is a 80% chance for corruption
+				if(Math.random()*100 > 80){
+					corruption_count++;
+					if(IV[j] == 1){
+						IV[j] = 0;
+					}
+					else{
+						IV[j] = 1;
+					}
+				}
+			}
+			
+			
+			long decStartTime = System.nanoTime();
+			//Decryption
+			String decOutputString = "";
+			if(i == 0){
+				decOutputString = modes.ECB(encOutputString, key, false);
+			}
+			else if(i == 1){
+				decOutputString = modes.CBC(encOutputString, key, IV, false);
+			}
+			else if(i == 2){
+				decOutputString = modes.CFB(encOutputString, key, IV, false);
+			}
+			else if(i == 3){
+				decOutputString = modes.OFB(encOutputString, key, IV, false);
+			}
+			else if(i == 4){
+				decOutputString = modes.CRT(encOutputString, key, IV, false);
+			}
+			long decEndTime = System.nanoTime();
+			
+			long encTime = encEndTime - encStartTime;
+			long decTime = decEndTime - decStartTime;
+			long totalTime = decEndTime - encStartTime;
+			testBench.corruption_testFooter(encTime, decTime, totalTime, inputText, encOutputString, decOutputString, i, corruption_count, 1);
 		}
 	}
 
 	public static void corruption_testFooter(long encTime, long decTime, long totalTime, String inputText, 
-			String encOutputString, String decOutputString, int testNum, int corruption_count){
+			String encOutputString, String decOutputString, int testNum, int corruption_count, int testType){
 		double divider = 1000000;
-		if(testNum == 0){
-			System.out.println("		ECB:");
-		}
-		else if(testNum == 1){
-			System.out.println("		CBC:");
-		}
-		else if(testNum == 2){
-			System.out.println("		CFB:");
-		}
-		else if(testNum == 3){
-			System.out.println("		OFB:");
-		}
-		else if(testNum == 4){
-			System.out.println("		CRT:");
-		}
-		
 		int extended_corruption = 0;
 		for(int i = 0; i <inputText.length(); i++){
 			if(inputText.charAt(i) != decOutputString.charAt(i)){
@@ -305,6 +445,66 @@ public class testBench {
 			}
 		}
 		
+		if(testNum == 0){
+			System.out.println("		ECB:");
+			if(testType == 0){
+				testBench.ECBCorruptCount += ((double)extended_corruption/(double)corruption_count);
+			}
+			else if(testType == 1){
+				testBench.IV_ECBCorruptCount += ((double)extended_corruption/(double)corruption_count);
+			}
+			else if(testType == 2){
+				testBench.ECBScrambleCount += ((double)extended_corruption/(double)corruption_count);
+			}
+		}
+		else if(testNum == 1){
+			System.out.println("		CBC:");
+			if(testType == 0){
+				testBench.CBCCorruptCount += ((double)extended_corruption/(double)corruption_count);
+			}
+			else if(testType == 1){
+				testBench.IV_CBCCorruptCount += ((double)extended_corruption/(double)corruption_count);
+			}
+			else if(testType == 2){
+				testBench.CBCScrambleCount += ((double)extended_corruption/(double)corruption_count);
+			}
+		}
+		else if(testNum == 2){
+			System.out.println("		CFB:");
+			if(testType == 0){
+				testBench.CFBCorruptCount += ((double)extended_corruption/(double)corruption_count);
+			}
+			else if(testType == 1){
+				testBench.IV_CFBCorruptCount += ((double)extended_corruption/(double)corruption_count);
+			}
+			else if(testType == 2){
+				testBench.CFBScrambleCount += ((double)extended_corruption/(double)corruption_count);
+			}
+		}
+		else if(testNum == 3){
+			System.out.println("		OFB:");
+			if(testType == 0){
+				testBench.OFBCorruptCount += ((double)extended_corruption/(double)corruption_count);
+			}
+			else if(testType == 1){
+				testBench.IV_OFBCorruptCount += ((double)extended_corruption/(double)corruption_count);
+			}
+			else if(testType == 2){
+				testBench.OFBScrambleCount += ((double)extended_corruption/(double)corruption_count);
+			}
+		}
+		else if(testNum == 4){
+			System.out.println("		CRT:");
+			if(testType == 0){
+				testBench.CRTCorruptCount += ((double)extended_corruption/(double)corruption_count);
+			}
+			else if(testType == 1){
+				testBench.IV_CRTCorruptCount += ((double)extended_corruption/(double)corruption_count);
+			}
+			else if(testType == 2){
+				testBench.CRTScrambleCount += ((double)extended_corruption/(double)corruption_count);
+			}
+		}		
 		
 		System.out.println("			Encryption Index of Coincidence	: " + getIC(getLetterFreq(encOutputString), encOutputString) + 
 				"	|	Encryption time	: " + (double)encTime/divider + " ms");
@@ -314,7 +514,7 @@ public class testBench {
 		double origIC = getIC(getLetterFreq(inputText), inputText);
 		System.out.println("			Original Index of Coincidence	: " + origIC + 
 				"	|	Total time	: " + (double)totalTime/divider + " ms");
-		System.out.println("			Corruption propogation : " + Math.ceil(((double)extended_corruption/(double)corruption_count)) + 
+		System.out.println("			Corruption propogation : " + ((double)extended_corruption/(double)corruption_count) + 
 				" corrupted chars per initial corruptions");
 		if (Double.isNaN(decIC)){
 			//System.out.println("			ERROR: DecIC == NAN, Decoding is not working");
@@ -350,7 +550,7 @@ public class testBench {
 			}
 			long encEndTime = System.nanoTime();
 						
-			//Scramble em
+			//Scramble the blocks
 			String temp = encOutputString;
 			ArrayList<String> stringList = new ArrayList<String>();
 			for(int j = 0; j < temp.length()/8; j++){
@@ -390,81 +590,10 @@ public class testBench {
 			long encTime = encEndTime - encStartTime;
 			long decTime = decEndTime - decStartTime;
 			long totalTime = decEndTime - encStartTime;
-			testBench.time_IC_testFooter(encTime, decTime, totalTime, inputText, encOutputString, decOutputString, i);
+			testBench.corruption_testFooter(encTime, decTime, totalTime, inputText, encOutputString, decOutputString, i, origSize, 2);
 		}
 	}
 
-	public static void target_swap_Test(String inputText, int[] key){
-		for(int i = 0; i < 5; i++){
-			int[] IV = modes.createIV();
-			//Start enc timer
-			long encStartTime = System.nanoTime();
-			//Encryption
-			String encOutputString = "";
-			if(i == 0){
-				encOutputString = modes.ECB(inputText, key, true);
-			}
-			else if(i == 1){
-				encOutputString = modes.CBC(inputText, key, IV, true);
-			}
-			else if(i == 2){
-				encOutputString = modes.CFB(inputText, key, IV, true);
-			}
-			else if(i == 3){
-				encOutputString = modes.OFB(inputText, key, IV, true);
-			}
-			else if(i == 4){
-				encOutputString = modes.CRT(inputText, key, IV, true);
-			}
-			long encEndTime = System.nanoTime();
-						
-			//Swap every 3rd: ex: 1, 2, 3, 4, 5, 6 -> 3, 2, 1, 6, 5, 4
-			String temp = encOutputString;
-			ArrayList<String> stringList = new ArrayList<String>();
-			for(int j = 0; j < temp.length()/8; j++){
-				stringList.add(temp.substring(j, j+8));				
-			}
-			int origSize = stringList.size();
-			temp = "";
-			for(int j = 0; j < origSize - 3; j = j+3){
-				if(stringList.isEmpty() == false){
-					if((stringList.size() - 1) < (j+2)){
-						int idx = j;
-						temp = temp + stringList.get(idx + 2);
-						temp = temp + stringList.get(idx + 1);
-						temp = temp + stringList.get(idx + 0);
-					}
-				}
-			}
-			encOutputString = temp;
-			
-			long decStartTime = System.nanoTime();
-			//Decryption
-			String decOutputString = "";
-			if(i == 0){
-				decOutputString = modes.ECB(encOutputString, key, false);
-			}
-			else if(i == 1){
-				decOutputString = modes.CBC(encOutputString, key, IV, false);
-			}
-			else if(i == 2){
-				decOutputString = modes.CFB(encOutputString, key, IV, false);
-			}
-			else if(i == 3){
-				decOutputString = modes.OFB(encOutputString, key, IV, false);
-			}
-			else if(i == 4){
-				decOutputString = modes.CRT(encOutputString, key, IV, false);
-			}			
-			long decEndTime = System.nanoTime();
-			
-			long encTime = encEndTime - encStartTime;
-			long decTime = decEndTime - decStartTime;
-			long totalTime = decEndTime - encStartTime;
-			testBench.time_IC_testFooter(encTime, decTime, totalTime, inputText, encOutputString, decOutputString, i);
-		}
-	}
-	
 	public static String getFile(String filePath){
 		String inputText = "";
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
