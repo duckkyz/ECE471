@@ -1,7 +1,4 @@
 package modes;
-import java.util.Random;
-import java.util.Scanner;
-
 import des.DES;
 
 public class modes {
